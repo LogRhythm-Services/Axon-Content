@@ -16,7 +16,6 @@ $headers.Add("Authorization", $APIKey)
 
 
 # Get User ID from the target system 
-
 $response = Invoke-RestMethod "https://${Endpoint}/access-control-svc/v1/tenants/$Tenant/openid-connect/userinfo" -Method 'GET' -Headers $headers
 $UserID = $response.sub
 
@@ -24,10 +23,10 @@ $headers.Add("Accept", "application/json")
 $headers.Add("Content-Type", "application/json")
 
 # Read File 
-$dashboard = Get-Content "$Object.txt" | ConvertFrom-Json
+$dashboard = Get-Content "$Object.dashboard.txt" | ConvertFrom-Json
 
-# Fix Layout
-$SavedSearches = get-ChildItem -Path . -Name "$Object.*.txt"
+# Fix Dashboard Layout by getting dependent searches
+$SavedSearches = get-ChildItem -Path . -Name "$Object.savedsearch.*.txt"
 
 foreach ($i in $SavedSearches) { 
     $SearchID = $i.Substring($i.Length-40,36)
@@ -54,17 +53,18 @@ foreach ($i in $SavedSearches) {
 }
 
 
-# Import Layout 
-
+# Remove any read-only objects.
 $dashboard.psobject.Properties.Remove('tenantId')
 $dashboard.psobject.Properties.Remove('id')
 $dashboard.psobject.Properties.Remove('createdOn')
 $dashboard.psobject.Properties.Remove('updatedOn')
+
+# Update the owner to user who owns the API Key
 $dashboard.userId = $UserID
 
 
 $body = $dashboard | ConvertTo-Json
 $response = Invoke-RestMethod "https://${Endpoint}/layout-definition-svc/v1/tenants/$Tenant/layoutdefinitions" -Method 'POST' -Headers $headers -Body $body
-write-host "Created $response.content.id"
+write-host "Importing Dashboard as ID:[$response.content.id]"
 
 
