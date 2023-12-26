@@ -1,5 +1,5 @@
 {
-  "title": "PS: MS Windows Account Unlocked",
+  "title": "MS Windows Account Unlocked",
   "version": 3,
   "description": "This Analytic Rule creates Observations for an Account Unlocked activity in MS Windows.",
   "observationPipeline": {

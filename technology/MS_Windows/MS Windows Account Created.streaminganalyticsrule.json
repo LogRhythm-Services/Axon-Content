@@ -1,7 +1,7 @@
 {
-  "title": "PS: MS Windows Account Enabled",
+  "title": "MS Windows Account Created",
   "version": 3,
-  "description": "This Analytic Rule creates Observations for an Account Enabled activity in MS Windows.",
+  "description": "This Analytic Rule creates Observations for an Account Created activity in MS Windows.",
   "observationPipeline": {
     "pattern": {
       "operations": [
@@ -9,7 +9,7 @@
           "touched": true,
           "blockType": "LOG_OBSERVED",
           "logObserved": {
-            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Enabled\"",
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Created\"",
             "groupByFields": [
               "origin.account.name",
               "target.account.name",
@@ -18,13 +18,13 @@
           },
           "operationType": "WHERE_PATTERN_OPERATION",
           "isOutOfBoxRule": false,
-          "ruleElementKey": "a9babbaa-4567-489a-bcde-f18b902bae78"
+          "ruleElementKey": "a98b98a8-4567-489a-bcde-f18b9030caad"
         }
       ],
       "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
     },
     "commonEvents": [
-      "e7e1c6cf-45e7-416d-aedf-229bf6b0e940",
+      "83937455-69c4-476c-825f-14e4a7944255",
       "78344f03-a536-455a-96ec-1c1d24e233bd"
     ],
     "metadataFields": {

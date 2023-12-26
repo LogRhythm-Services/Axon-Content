@@ -1,5 +1,5 @@
 {
-  "title": "PS: Admin Login to Juniper Pulse Secure VPN",
+  "title": "Admin Login to Juniper Pulse Secure VPN",
   "version": 3,
   "description": "This Analytic Rule creates Observations for when an Admin logs into Juniper Pulse Secure VPN. Note: Replace object.group.name value as you may.",
   "observationPipeline": {

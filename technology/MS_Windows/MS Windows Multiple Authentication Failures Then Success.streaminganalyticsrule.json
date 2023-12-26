@@ -1,5 +1,5 @@
 {
-  "title": "PS: MS Windows Multiple Authentication Failures Then Success",
+  "title": "MS Windows Multiple Authentication Failures Then Success",
   "version": 3,
   "description": "This Analytic Rule creates Observations for multiple Authentication Failure attempts then followed by an Authentication Success",
   "observationPipeline": {

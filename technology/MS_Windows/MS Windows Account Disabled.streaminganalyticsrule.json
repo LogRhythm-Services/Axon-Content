@@ -1,5 +1,5 @@
 {
-  "title": "PS: MS Windows Account Disabled",
+  "title": "MS Windows Account Disabled",
   "version": 3,
   "description": "This Analytic Rule creates Observations for an Account Disabled activity in MS Windows.",
   "observationPipeline": {

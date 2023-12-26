@@ -1,5 +1,5 @@
 {
-  "title": "PS: MS Windows Account Added to Group",
+  "title": "MS Windows Account Added to Group",
   "version": 3,
   "description": "This Analytic Rule creates Observations for an Account Added to Group activity in MS Windows.",
   "observationPipeline": {

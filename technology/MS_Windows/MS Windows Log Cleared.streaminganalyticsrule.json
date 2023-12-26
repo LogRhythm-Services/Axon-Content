@@ -1,5 +1,5 @@
 {
-  "title": "PS: MS Windows Log Cleared",
+  "title": "MS Windows Log Cleared",
   "version": 3,
   "description": "This Analytic Rule creates Observations for an Audit Log Clearing activity in MS Windows.",
   "observationPipeline": {
