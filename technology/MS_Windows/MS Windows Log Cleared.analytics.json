@@ -1,0 +1,34 @@
+{
+  "title": "PS: MS Windows Log Cleared",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Audit Log Clearing activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" and general_information.common_event_name = \"Log Cleared Successfully\"",
+            "groupByFields": [
+              "origin.account.name",
+              "origin.host.name",
+              "origin.host.ip_address.value"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "8b8a99aa-0123-4456-b89a-b18b90368f4a"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "7155d0de-70f0-4e9e-8438-dc0ff1829c23",
+      "8534ab1a-fb51-4db0-96a6-35a6cb1ad914"
+    ],
+    "metadataFields": {
+      "threat.severity": "high"
+    }
+  }
+}

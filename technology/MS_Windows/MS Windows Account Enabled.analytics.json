@@ -1,0 +1,34 @@
+{
+  "title": "PS: MS Windows Account Enabled",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Enabled activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Enabled\"",
+            "groupByFields": [
+              "origin.account.name",
+              "target.account.name",
+              "observer.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "a9babbaa-4567-489a-bcde-f18b902bae78"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "e7e1c6cf-45e7-416d-aedf-229bf6b0e940",
+      "78344f03-a536-455a-96ec-1c1d24e233bd"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    }
+  }
+}

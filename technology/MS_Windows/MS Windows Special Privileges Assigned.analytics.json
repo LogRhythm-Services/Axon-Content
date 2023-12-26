@@ -1,0 +1,35 @@
+{
+  "title": "PS: MS Windows Special Privileges Assigned",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for Special Privileges Assigned to an Account activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Special Privileges Assigned\"",
+            "groupByFields": [
+              "observer.host.name",
+              "origin.account.name",
+              "target.account.name",
+              "action.command"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "a88b889b-89ab-4cde-b012-318c02c71986"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "db9f600a-bfd6-4156-9f1b-9ab7b029410e",
+      "0787e28f-71d8-4a1e-9048-71fd61e89a0d"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

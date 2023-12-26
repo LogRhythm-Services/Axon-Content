@@ -1,0 +1,35 @@
+{
+  "title": "PS: MS Windows Account Locked",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Locked activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "( general_information.log_source.type_name = \"Microsoft Windows Security\" ) AND general_information.common_event_name = \"Account Locked\"",
+            "groupByFields": [
+              "observer.host.name",
+              "origin.account.name",
+              "target.account.name",
+              "target.account.domain"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "8abb889a-cdef-4012-b456-718c02c3bd57"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "d6870faa-b1c4-4a74-9327-ceacb4d68f90"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

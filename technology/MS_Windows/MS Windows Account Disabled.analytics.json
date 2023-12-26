@@ -1,0 +1,34 @@
+{
+  "title": "PS: MS Windows Account Disabled",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Disabled activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Disabled\"",
+            "groupByFields": [
+              "origin.account.name",
+              "target.account.name",
+              "observer.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "ab8b88aa-cdef-4012-b456-718b902eb458"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "4a9479a0-3c5c-4fd6-9b70-92104791badb",
+      "78344f03-a536-455a-96ec-1c1d24e233bd"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    }
+  }
+}

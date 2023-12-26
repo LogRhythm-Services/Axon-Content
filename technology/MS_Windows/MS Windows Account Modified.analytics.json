@@ -1,0 +1,35 @@
+{
+  "title": "PS: MS Windows Account Modified",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Modification activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Modified\"",
+            "groupByFields": [
+              "observer.host.name",
+              "origin.account.name",
+              "target.account.name",
+              "target.account.domain"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "b8989bab-89ab-4cde-b012-318c02c2cece"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "eb1c3075-feec-4bab-81d7-9bb30ce59eb0"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

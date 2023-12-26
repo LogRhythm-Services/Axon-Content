@@ -1,0 +1,58 @@
+{
+  "title": "PS: MS Windows Multiple Authentication Failures Then Success",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for multiple Authentication Failure attempts then followed by an Authentication Success",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "8a8a9aa9-89ab-4cde-b012-318c7dc3ac03",
+          "countThresholdObserved": {
+            "filter": "general_information.log_source.type_name = \"microsoft windows security\" AND general_information.common_event_name = Authentication Failure",
+            "threshold": 20,
+            "groupByFields": [
+              "origin.account.name"
+            ],
+            "windowSeconds": 600
+          }
+        },
+        {
+          "touched": true,
+          "operationType": "FOLLOWED_BY_PATTERN_OPERATION",
+          "isOutOfBoxRule": false
+        },
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"microsoft windows security\" AND general_information.common_event_name = Authentication Success",
+            "groupByFields": [
+              "origin.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "b8899a8b-0123-4456-b89a-b18c7dc2a9f6"
+        },
+        {
+          "seconds": 600,
+          "touched": true,
+          "operationType": "WITHIN_PATTERN_OPERATION",
+          "isOutOfBoxRule": false
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "high"
+    }
+  }
+}
