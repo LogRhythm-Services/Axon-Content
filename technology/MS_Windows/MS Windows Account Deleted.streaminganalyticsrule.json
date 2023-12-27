@@ -1,0 +1,34 @@
+{
+  "title": "MS Windows Account Deleted",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Deleted activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Deleted\"",
+            "groupByFields": [
+              "origin.account.name",
+              "target.account.name",
+              "observer.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "98aa8a99-0123-4456-b89a-b18b9031e9d5"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "b49e2331-aeb9-4b2f-837f-528d6793bcec"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

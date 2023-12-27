@@ -1,0 +1,35 @@
+{
+  "title": "MS Windows Account Unlocked",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Unlocked activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Unlocked\"",
+            "groupByFields": [
+              "observer.host.name",
+              "origin.account.name",
+              "target.account.name",
+              "target.account.domain"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "aa8aa888-89ab-4cde-b012-318b902fe363"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "92f1b539-7894-40eb-9636-3e3e5f6c52c2",
+      "78344f03-a536-455a-96ec-1c1d24e233bd"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    }
+  }
+}

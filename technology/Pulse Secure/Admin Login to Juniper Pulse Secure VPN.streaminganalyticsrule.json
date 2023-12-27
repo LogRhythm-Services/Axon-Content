@@ -1,0 +1,32 @@
+{
+  "title": "Admin Login to Juniper Pulse Secure VPN",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for when an Admin logs into Juniper Pulse Secure VPN. Note: Replace object.group.name value as you may.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"juniper secure connect\" AND general_information.common_event_name = Authentication Success AND object.group.name = \"admins\"",
+            "groupByFields": [
+              "object.group.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "a89bb9b8-cdef-4012-b456-718c7e76bf64"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "0787e28f-71d8-4a1e-9048-71fd61e89a0d",
+      "a784ec9c-f6d9-4b73-9e00-f47184b5d1d8"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

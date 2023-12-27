@@ -1,0 +1,36 @@
+{
+  "title": "MS Windows Account Added to Group",
+  "version": 3,
+  "description": "This Analytic Rule creates Observations for an Account Added to Group activity in MS Windows.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = \"Microsoft Windows Security\" AND general_information.common_event_name = \"Account Added to Group\"",
+            "groupByFields": [
+              "observer.host.name",
+              "origin.account.name",
+              "target.account.name",
+              "target.host.name",
+              "object.group.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "ab98b8aa-4567-489a-bcde-f18c02d5d275"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "1ea555bb-e9a3-4c79-9fa3-9a583242fe8c"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    }
+  }
+}
