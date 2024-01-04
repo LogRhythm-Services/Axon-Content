@@ -34,4 +34,3 @@ Object_Name.Content_Type.guid.txt
 
 
 
-![image](https://github.com/LR-Subscription-Services/Axon-Content/assets/84782309/eb2c4406-d146-4e1d-8d92-79f075261f70)
