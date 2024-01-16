@@ -1,0 +1,4983 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Combined
+  description: https://docs.logrhythm.com/axon/docs/axon-api-guide
+host: api.na01.prod.boreas.cloud
+basePath: /
+schemes:
+  - https
+consumes: []
+produces:
+  - application/json
+paths:
+  /list-svc/v1/tenants/{tenantId}/list-definitions:
+    get:
+      summary: Retrieve All List Definitions For a Tenant
+      description: >
+        * Get a paged list of List Definitions by tenant id.
+
+        * `tenantId`: (required) The tenant for which to retrieve List
+        Definitions.
+
+        * Default sort is `updatedOn` descending.
+
+        * Supported sort fields are `id`, `title`, `description`, `retired`,
+        `dataStrategy`, `createdBy`, `updatedBy`, `createdOn`, `updatedOn`,
+        `entryCount`.
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveAllListDefinitionForTenant
+      parameters:
+        - name: afterId
+          in: query
+          type: string
+          required: false
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result. Example: 0f54a194-d75a-4a60-8c68-d4b8e66c971c
+        - name: limit
+          default: 10
+          in: query
+          type: integer
+          required: false
+          format: int32
+          description: The maximum number of results that a response page can contain.
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          description: The identifier of the tenant
+          x-ms-visibility: important
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: 'The order you would like the results in. Example: field:asc        '
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    columns:
+                      type: array
+                      items: {}
+                      description: columns
+                    description:
+                      type: string
+                      description: description
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    title:
+                      type: string
+                      description: title
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    retired:
+                      type: boolean
+                      description: retired
+                    dataStrategy:
+                      type: string
+                      description: dataStrategy
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    entryCount:
+                      type: integer
+                      format: int32
+                      description: entryCount
+                description: content
+    post:
+      summary: Create a List Definition
+      description: >
+        * Create List Definition and its associated metadata.
+
+        * `tenantId`: (required) The tenant associated with the List Definition
+        to create.
+
+        * `listDefinition`: (request body) A List Definition to create.
+
+        * List Definitions are not a container for list items, rather a
+        specification of the columns/ items that compose the list.
+
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: CreateAListDefinition
+      parameters:
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          description: The identifier of the tenant
+          x-ms-visibility: important
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+          x-ms-visibility: internal
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              columns:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      description: title
+                      title: ''
+                    description:
+                      type: string
+                      description: description
+                    type:
+                      type: string
+                      description: type
+                      title: ''
+                      enum:
+                        - DATE
+                        - GEO_POINT
+                        - INTEGER
+                        - IP
+                        - LONG_TEXT
+                        - STRING
+                  required:
+                    - title
+                    - type
+                description: columns
+              description:
+                type: string
+                description: description
+              tenantId:
+                type: string
+                description: tenantId
+                title: ''
+                x-ms-visibility: internal
+              title:
+                type: string
+                description: title
+                title: ''
+              id:
+                type: string
+                description: id
+                title: ''
+                x-ms-visibility: internal
+              createdOn:
+                type: string
+                description: createdOn
+                title: ''
+                x-ms-visibility: internal
+              updatedOn:
+                type: string
+                description: updatedOn
+                title: ''
+                x-ms-visibility: internal
+              retired:
+                type: boolean
+                description: retired
+                title: ''
+                x-ms-visibility: advanced
+              dataStrategy:
+                type: string
+                description: dataStrategy
+                title: ''
+                default: LOCAL
+                x-ms-visibility: advanced
+              createdBy:
+                type: string
+                description: createdBy
+                title: ''
+                x-ms-visibility: internal
+              updatedBy:
+                type: string
+                description: updatedBy
+                title: ''
+                x-ms-visibility: internal
+              entryCount:
+                type: integer
+                format: int32
+                description: entryCount
+                title: ''
+                x-ms-visibility: advanced
+            default:
+              columns: []
+              description: nulla consequat in nisi
+              tenantId: <string>
+              title: j
+              id: <string>
+              createdOn: '1997-04-27T05:19:29.004Z'
+              updatedOn: '2022-05-19T21:46:29.050Z'
+              retired: 'false'
+              dataStrategy: LOCAL
+              createdBy: eu
+              updatedBy: aliquip in anim
+              entryCount: '0'
+            required:
+              - columns
+              - title
+          required: true
+      responses:
+        '201':
+          description: '201'
+          schema:
+            type: object
+  /list-svc/v1/tenants/{tenantId}/list-definitions/byColumnTypeAndTitlePattern:
+    get:
+      summary: Retrieve List Definitions by Column Type and Title Pattern
+      description: >
+        * Returns List Definitions matching the requested Column Type and Title
+        Pattern.
+
+        * Default sort is `updatedOn` descending.
+
+        * Supported sort fields are `id`, `title`, `description`, `retired`,
+        `dataStrategy`, `createdBy`, `updatedBy`, `createdOn`, `updatedOn`,
+        `entryCount`.
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveListDefinitionsByColumnTypeAndTitlePattern
+      parameters:
+        - name: afterId
+          in: query
+          type: string
+          required: false
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result. Example : 0f54a194-d75a-4a60-8c68-d4b8e66c971c
+        - name: columnType
+          in: query
+          type: string
+          required: true
+          description: >-
+            List Definitions with at least one column of the specified Type will
+            be returned.
+          enum:
+            - DATE
+            - GEO_POINT
+            - INTEGER
+            - IP
+            - LONG_TEXT
+            - STRING
+          x-ms-visibility: important
+        - name: limit
+          default: 10
+          in: query
+          type: integer
+          required: false
+          format: int32
+          description: The maximum number of results that a response page can contain.
+        - name: titlePattern
+          in: query
+          type: string
+          required: true
+          description: >-
+            The pattern a list definition's title must match in order for that
+            entity to be returned Use % to specify wildcard sequences. For
+            example, %my title%. Will match any title which contains the phrase
+            my title Left anchored patterns (ex. 'th%') are the most performant
+            using Postgres indexes. Pattern must contain a minimum of 2
+            characters, and maximum of 10. Example : %ea%
+          x-ms-visibility: important
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          description: The identifier of the tenant
+          x-ms-visibility: important
+        - name: sort
+          in: query
+          required: false
+          type: string
+          x-ms-summary: 'Example : field:asc'
+          description: 'The order you would like the results in. Example : field:asc'
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    columns:
+                      type: array
+                      items: {}
+                      description: columns
+                    description:
+                      type: string
+                      description: description
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    title:
+                      type: string
+                      description: title
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    retired:
+                      type: boolean
+                      description: retired
+                    dataStrategy:
+                      type: string
+                      description: dataStrategy
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    entryCount:
+                      type: integer
+                      format: int32
+                      description: entryCount
+                description: content
+  /list-svc/v1/tenants/{tenantId}/list-definitions/byListTitleAndColumnTypeAndListCreatorAndLastUpdatedAndDateCreatedAndEntriesCount:
+    get:
+      summary: Retrieve List Definitions Matching Metadata
+      description: >-
+        Returns a paginated list of List Definitions matching the requested
+        title pattern, column type, list creator, created date, last updated
+        date, and/or entry count.* Default sort is `updatedOn` descending.*
+        Supported sort fields are `id`, `title`, `description`, `retired`,
+        `dataStrategy`, `createdBy`, `updatedBy`, `createdOn`, `updatedOn`,
+        `entryCount`.* This method will return 401 for unauthenticated users. *
+        This method will return 403 for authenticated users who request a
+        forbidden resource.
+      operationId: RetrieveListDefinitionsMatchingMetadata
+      parameters:
+        - name: afterId
+          in: query
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result. Example : 0f54a194-d75a-4a60-8c68-d4b8e66c971c
+          type: string
+          required: false
+        - name: columnTypeFilter
+          in: query
+          type: string
+          required: false
+        - name: createdByFilter
+          in: query
+          type: string
+          required: false
+        - name: createdOnFilter
+          in: query
+          type: string
+          required: false
+        - name: entryCountFilter
+          in: query
+          type: string
+          required: false
+        - name: lastUpdatedOnFilter
+          in: query
+          type: string
+          required: false
+        - name: limit
+          default: 10
+          in: query
+          type: integer
+          format: int32
+          required: false
+        - name: titlePatternFilter
+          in: query
+          type: string
+          required: false
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          x-ms-visibility: important
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    columns:
+                      type: array
+                      items: {}
+                      description: columns
+                    description:
+                      type: string
+                      description: description
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    title:
+                      type: string
+                      description: title
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    retired:
+                      type: boolean
+                      description: retired
+                    dataStrategy:
+                      type: string
+                      description: dataStrategy
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    entryCount:
+                      type: integer
+                      format: int32
+                      description: entryCount
+                description: content
+  /list-svc/v1/tenants/{tenantId}/list-definitions/{id}:
+    get:
+      summary: Retrieve a List Definition
+      description: >
+        * Get a List Definition by its assigned unique identifier.
+
+        * `tenantId`: (required) The tenant associated with the List Definition
+        to retrieve.
+
+        * `id`: (required) The unique identifier of the List Definition to
+        retrieve.
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: RetrieveAListDefinition
+      parameters:
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  description:
+                    type: string
+                    description: description
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  title:
+                    type: string
+                    description: title
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  retired:
+                    type: boolean
+                    description: retired
+                  dataStrategy:
+                    type: string
+                    description: dataStrategy
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  entryCount:
+                    type: integer
+                    format: int32
+                    description: entryCount
+                description: content
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+    put:
+      summary: Update List Definition
+      description: >-
+        Update the Title and/or Description of an existing List Definition. 
+        Additionally, if any Column Definitions are included in the request
+        body, update the Title and/or Description for each.* NOTE: currently,
+        only a single column is supported for update.* `tenantId`: (required)
+        The tenant associated with the List Definition to update.* `id`:
+        (required) The unique identifier of the List Definition to replace.*
+        `listDefinition`: (request body) A List Definition whose
+        Title/Description are to be updated.* This method will return 400 upon
+        receiving an invalid request. * This method will return 401 for
+        unauthenticated users. * This method will return 403 for authenticated
+        users who request a forbidden resource. * This method will return 404
+        upon receiving a identifier that does not exist.
+      operationId: UpdateListDefinition
+      parameters:
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              columns:
+                type: array
+                items: {}
+                description: columns
+              description:
+                type: string
+                description: description
+              tenantId:
+                type: string
+                description: tenantId
+              title:
+                type: string
+                description: title
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+              retired:
+                type: boolean
+                description: retired
+              dataStrategy:
+                type: string
+                description: dataStrategy
+              createdBy:
+                type: string
+                description: createdBy
+              updatedBy:
+                type: string
+                description: updatedBy
+              entryCount:
+                type: integer
+                format: int32
+                description: entryCount
+            default:
+              columns: []
+              description: nulla consequat in nisi
+              tenantId: <string>
+              title: j
+              id: <string>
+              createdOn: '1997-04-27T05:19:29.004Z'
+              updatedOn: '2022-05-19T21:46:29.050Z'
+              retired: 'false'
+              dataStrategy: LOCAL
+              createdBy: eu
+              updatedBy: aliquip in anim
+              entryCount: 0
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  description:
+                    type: string
+                    description: description
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  title:
+                    type: string
+                    description: title
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  retired:
+                    type: boolean
+                    description: retired
+                  dataStrategy:
+                    type: string
+                    description: dataStrategy
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  entryCount:
+                    type: integer
+                    format: int32
+                    description: entryCount
+                description: content
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /list-svc/v1/tenants/{tenantId}/list-definitions/{id}/column-definitions/byTypeAndTitlePattern:
+    get:
+      summary: Retrieve List Columns by Type and Title
+      description: >
+        * Retrieve a paginated list of Column Definitions associated with the
+        given List Definition that match the given type and title.
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: RetrieveColumnsByTypeAndTitle
+      parameters:
+        - name: afterId
+          default: <string>
+          in: query
+          type: string
+          required: true
+        - name: limit
+          default: '10'
+          in: query
+          type: string
+          required: true
+        - name: titlePattern
+          default: <string>
+          in: query
+          type: string
+          required: true
+        - name: type
+          default: IP
+          in: query
+          type: string
+          required: true
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    title:
+                      type: string
+                      description: title
+                    type:
+                      type: object
+                      properties:
+                        example:
+                          type: string
+                          description: example
+                        nullable:
+                          type: boolean
+                          description: nullable
+                      description: type
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    description:
+                      type: string
+                      description: description
+                description: content
+  /list-svc/v1/tenants/{tenantId}/list-definitions/{id}/column-definitions/{columnId}/values:
+    get:
+      summary: Retrieve a Paginated List of Values in a Column
+      description: >
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: RetrieveAPaginatedListOfValuesInAColumn
+      parameters:
+        - name: afterId
+          default: <string>
+          in: query
+          type: string
+          required: true
+        - name: limit
+          default: '10'
+          in: query
+          type: string
+          required: true
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: columnId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    value:
+                      type: string
+                      description: value
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                description: content
+  /list-svc/v1/tenants/{tenantId}/list-definitions/list-items/preview:
+    post:
+      summary: Retrieve a List Preview
+      description: >
+        * Preview List Items given a CSV file. 
+
+        * Neither the CSV file or the List Items parsed are persisted by the
+        service. 
+
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: PreviewList
+      parameters:
+        - name: headersNotIncluded
+          default: 'false'
+          in: query
+          type: string
+          required: true
+        - name: previewSize
+          default: '20'
+          in: query
+          type: string
+          required: true
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: multipart/form-data
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  columns:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        title:
+                          type: string
+                          description: title
+                        type:
+                          type: object
+                          properties:
+                            example:
+                              type: string
+                              description: example
+                            nullable:
+                              type: boolean
+                              description: nullable
+                          description: type
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        description:
+                          type: string
+                          description: description
+                    description: columns
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        operationType:
+                          type: string
+                          description: operationType
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        value:
+                          type: object
+                          properties:
+                            est_2d:
+                              type: string
+                              description: est_2d
+                            et__:
+                              type: string
+                              description: et__
+                            dolor97:
+                              type: string
+                              description: dolor97
+                            elit7f9:
+                              type: string
+                              description: elit7f9
+                            sed__04:
+                              type: string
+                              description: sed__04
+                            reprehenderit_a_:
+                              type: string
+                              description: reprehenderit_a_
+                          description: value
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        retired:
+                          type: boolean
+                          description: retired
+                    description: items
+                description: content
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /list-svc/v1/tenants/{tenantId}/list-definitions/{id}/list-items/import:
+    post:
+      summary: Import List Items From CSV File
+      description: >
+        * Add items in a given CSV file to the specified List.
+
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: ImportListItemsFromCsvFile
+      parameters:
+        - name: headersNotIncluded
+          default: 'false'
+          in: query
+          type: string
+          required: true
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: multipart/form-data
+          description: Content-Type
+      responses:
+        '204':
+          description: '204'
+          schema:
+            type: string
+    put:
+      summary: Replace All List Items
+      description: >
+        * Replaces all items in the List with the items in the given CSV.
+
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: ReplaceAllListItems
+      parameters:
+        - name: headersNotIncluded
+          default: 'false'
+          in: query
+          type: string
+          required: true
+        - name: tenantId
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: <string>
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: multipart/form-data
+          description: Content-Type
+      responses:
+        '204':
+          description: '204'
+          schema:
+            type: string
+  /case-management-svc/v1/tenants/{tenantId}/activities/byCaseId/{caseId}:
+    get:
+      summary: Retrieve Case Activities for a Case and Tenant
+      description: >
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: RetrieveAllTheActivityEntriesForASpecificCaseAndTenant.
+      parameters:
+        - name: afterId
+          in: query
+          type: string
+          required: false
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result. Example: 0f54a194-d75a-4a60-8c68-d4b8e66c971c
+        - name: limit
+          default: 10
+          in: query
+          type: integer
+          required: false
+          format: int32
+          description: The maximum number of results that a response page can contain.
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: 'The order you would like the results in. Example: field:asc '
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          description: The identifier of the tenant
+          x-ms-visibility: important
+        - name: caseId
+          in: path
+          type: string
+          required: true
+          description: The identifier of the case
+          x-ms-visibility: important
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              computed:
+                type: object
+                properties:
+                  sunt58:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          laboris_8aa:
+                            type: object
+                            properties:
+                              ullamcoeb0:
+                                type: string
+                                description: ullamcoeb0
+                            description: laboris_8aa
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          ut27f:
+                            type: string
+                            description: ut27f
+                          magna_f3b:
+                            type: string
+                            description: magna_f3b
+                          incididunt__9:
+                            type: string
+                            description: incididunt__9
+                          pariatur_075:
+                            type: string
+                            description: pariatur_075
+                        description: stringMetadata
+                    description: sunt58
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    caseId:
+                      type: string
+                      description: caseId
+                    description:
+                      type: string
+                      description: description
+                    type:
+                      type: string
+                      description: type
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    queryFilter:
+                      type: string
+                      description: queryFilter
+                    firstLogDate:
+                      type: string
+                      description: firstLogDate
+                    lastLogDate:
+                      type: string
+                      description: lastLogDate
+                    logs:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          activityId:
+                            type: string
+                            description: activityId
+                          logId:
+                            type: string
+                            description: logId
+                          tenantId:
+                            type: string
+                            description: tenantId
+                          id:
+                            type: string
+                            description: id
+                          createdOn:
+                            type: string
+                            description: createdOn
+                          updatedOn:
+                            type: string
+                            description: updatedOn
+                          logDate:
+                            type: string
+                            description: logDate
+                      description: logs
+                    attachments:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          activityId:
+                            type: string
+                            description: activityId
+                          location:
+                            type: string
+                            description: location
+                          name:
+                            type: string
+                            description: name
+                          tenantId:
+                            type: string
+                            description: tenantId
+                          id:
+                            type: string
+                            description: id
+                          createdOn:
+                            type: string
+                            description: createdOn
+                          updatedOn:
+                            type: string
+                            description: updatedOn
+                      description: attachments
+                    createdByEmail:
+                      type: string
+                      description: createdByEmail
+                    updatedByEmail:
+                      type: string
+                      description: updatedByEmail
+                    logCount:
+                      type: integer
+                      description: logCount
+                description: content
+  /case-management-svc/v1/tenants/{tenantId}/activities/{id}:
+    get:
+      summary: Retrieve a Case Activity by ID for a Tenant
+      description: >
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: RetrieveAnActivityByIdForATenant.
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  caseId:
+                    type: string
+                    description: caseId
+                  description:
+                    type: string
+                    description: description
+                  type:
+                    type: string
+                    description: type
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  queryFilter:
+                    type: string
+                    description: queryFilter
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                  logs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        activityId:
+                          type: string
+                          description: activityId
+                        logId:
+                          type: string
+                          description: logId
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        logDate:
+                          type: string
+                          description: logDate
+                    description: logs
+                  attachments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        activityId:
+                          type: string
+                          description: activityId
+                        location:
+                          type: string
+                          description: location
+                        name:
+                          type: string
+                          description: name
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                    description: attachments
+                  createdByEmail:
+                    type: string
+                    description: createdByEmail
+                  updatedByEmail:
+                    type: string
+                    description: updatedByEmail
+                  logCount:
+                    type: integer
+                    description: logCount
+                description: content
+              computed:
+                type: object
+                properties:
+                  eu_7e:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          ea_030:
+                            type: object
+                            properties:
+                              et_c:
+                                type: string
+                                description: et_c
+                              exb:
+                                type: string
+                                description: exb
+                            description: ea_030
+                          ex_54:
+                            type: object
+                            properties:
+                              dolore6:
+                                type: string
+                                description: dolore6
+                              officia_51:
+                                type: string
+                                description: officia_51
+                              adab_:
+                                type: string
+                                description: adab_
+                            description: ex_54
+                          minim_7e:
+                            type: object
+                            properties:
+                              Excepteur_14f:
+                                type: string
+                                description: Excepteur_14f
+                            description: minim_7e
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          adipisicing_0f:
+                            type: string
+                            description: adipisicing_0f
+                        description: stringMetadata
+                    description: eu_7e
+                  in4:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          Duis_096:
+                            type: object
+                            properties:
+                              dolore_30:
+                                type: string
+                                description: dolore_30
+                            description: Duis_096
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          ut_c46:
+                            type: string
+                            description: ut_c46
+                        description: stringMetadata
+                    description: in4
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+    put:
+      summary: Update a Case Activity
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: UpdateAActivity
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              caseId:
+                type: string
+                description: caseId
+              createdBy:
+                type: string
+                description: createdBy
+              description:
+                type: string
+                description: description
+              tenantId:
+                type: string
+                description: tenantId
+              type:
+                type: string
+                description: type
+              updatedBy:
+                type: string
+                description: updatedBy
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+              queryFilter:
+                type: string
+                description: queryFilter
+              firstLogDate:
+                type: string
+                description: firstLogDate
+              lastLogDate:
+                type: string
+                description: lastLogDate
+            default:
+              caseId: '&'
+              createdBy: esse dolore aliqua
+              description: C
+              tenantId: <string>
+              type: aute
+              updatedBy: culpa dolore consequat
+              id: OrTJOtoi-qnxeA13MGR6L0FQSHaB~Gml
+              createdOn: '1970-07-11T17:13:16.492Z'
+              updatedOn: '1996-01-21T00:54:06.190Z'
+              queryFilter: ea deserunt commodo mollit occaecat
+              firstLogDate: '1949-08-13T18:18:15.494Z'
+              lastLogDate: '1990-06-04T07:07:12.889Z'
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  caseId:
+                    type: string
+                    description: caseId
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  description:
+                    type: string
+                    description: description
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  type:
+                    type: string
+                    description: type
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  queryFilter:
+                    type: string
+                    description: queryFilter
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                description: content
+              computed:
+                type: object
+                properties:
+                  ipsum3ad:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          magna14:
+                            type: object
+                            properties:
+                              esse_e0:
+                                type: string
+                                description: esse_e0
+                            description: magna14
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          quis4:
+                            type: string
+                            description: quis4
+                        description: stringMetadata
+                    description: ipsum3ad
+                  Excepteura:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          eiusmodd:
+                            type: object
+                            properties:
+                              veniam903:
+                                type: string
+                                description: veniam903
+                            description: eiusmodd
+                          do_1a0:
+                            type: object
+                            properties:
+                              aute3:
+                                type: string
+                                description: aute3
+                            description: do_1a0
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          cupidatat__0:
+                            type: string
+                            description: cupidatat__0
+                        description: stringMetadata
+                    description: Excepteura
+                  ute1b:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          in7f:
+                            type: object
+                            properties:
+                              culpac2:
+                                type: string
+                                description: culpac2
+                            description: in7f
+                          incididunt2b:
+                            type: object
+                            properties:
+                              esse_b:
+                                type: string
+                                description: esse_b
+                              in8e:
+                                type: string
+                                description: in8e
+                            description: incididunt2b
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          nostrud_7:
+                            type: string
+                            description: nostrud_7
+                        description: stringMetadata
+                    description: ute1b
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+    patch:
+      summary: Update a Case Activity Description
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: UpdateAActivityDescription
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  caseId:
+                    type: string
+                    description: caseId
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  description:
+                    type: string
+                    description: description
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  type:
+                    type: string
+                    description: type
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  queryFilter:
+                    type: string
+                    description: queryFilter
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                description: content
+              computed:
+                type: object
+                properties:
+                  ipsum3ad:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          magna14:
+                            type: object
+                            properties:
+                              esse_e0:
+                                type: string
+                                description: esse_e0
+                            description: magna14
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          quis4:
+                            type: string
+                            description: quis4
+                        description: stringMetadata
+                    description: ipsum3ad
+                  Excepteura:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          eiusmodd:
+                            type: object
+                            properties:
+                              veniam903:
+                                type: string
+                                description: veniam903
+                            description: eiusmodd
+                          do_1a0:
+                            type: object
+                            properties:
+                              aute3:
+                                type: string
+                                description: aute3
+                            description: do_1a0
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          cupidatat__0:
+                            type: string
+                            description: cupidatat__0
+                        description: stringMetadata
+                    description: Excepteura
+                  ute1b:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          in7f:
+                            type: object
+                            properties:
+                              culpac2:
+                                type: string
+                                description: culpac2
+                            description: in7f
+                          incididunt2b:
+                            type: object
+                            properties:
+                              esse_b:
+                                type: string
+                                description: esse_b
+                              in8e:
+                                type: string
+                                description: in8e
+                            description: incididunt2b
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          nostrud_7:
+                            type: string
+                            description: nostrud_7
+                        description: stringMetadata
+                    description: ute1b
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /case-management-svc/v1/tenants/{tenantId}/activities:
+    post:
+      summary: Create a Case Activity
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: CreateAnActivity
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+          x-ms-visibility: internal
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              caseId:
+                type: string
+                description: caseId
+              createdBy:
+                type: string
+                description: createdBy
+                title: ''
+                x-ms-visibility: internal
+              description:
+                type: string
+                description: description
+              tenantId:
+                type: string
+                description: tenantId
+              type:
+                type: string
+                description: type
+              updatedBy:
+                type: string
+                description: updatedBy
+                title: ''
+                x-ms-visibility: internal
+              id:
+                type: string
+                description: id
+                title: ''
+                x-ms-visibility: internal
+              createdOn:
+                type: string
+                description: createdOn
+                title: ''
+                x-ms-visibility: internal
+              updatedOn:
+                type: string
+                description: updatedOn
+                title: ''
+                x-ms-visibility: internal
+              queryFilter:
+                type: string
+                description: queryFilter
+              firstLogDate:
+                type: string
+                description: firstLogDate
+              lastLogDate:
+                type: string
+                description: lastLogDate
+            default:
+              caseId: '&'
+              createdBy: esse dolore aliqua
+              description: C
+              tenantId: <string>
+              type: aute
+              updatedBy: culpa dolore consequat
+              id: OrTJOtoi-qnxeA13MGR6L0FQSHaB~Gml
+              createdOn: '1970-07-11T17:13:16.492Z'
+              updatedOn: '1996-01-21T00:54:06.190Z'
+              queryFilter: ea deserunt commodo mollit occaecat
+              firstLogDate: '1949-08-13T18:18:15.494Z'
+              lastLogDate: '1990-06-04T07:07:12.889Z'
+          required: true
+      responses:
+        '201':
+          description: '201'
+          schema:
+            type: object
+            properties:
+              activityId:
+                type: string
+                description: activityId
+              comment:
+                type: string
+                description: comment
+              tenantId:
+                type: string
+                description: tenantId
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+  /case-management-svc/v1/tenants/{tenantId}/attachments/{id}:
+    put:
+      summary: Update a Case Attachment
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: UpdateAnAttachment
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              activityId:
+                type: string
+                description: activityId
+              location:
+                type: string
+                description: location
+              name:
+                type: string
+                description: name
+              tenantId:
+                type: string
+                description: tenantId
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+            default:
+              activityId: p
+              location: _
+              name: '`'
+              tenantId: <string>
+              id: 7EeVsDRs5sdTwAHq57d4x7FjB6rcJto
+              createdOn: '1972-09-13T09:21:18.924Z'
+              updatedOn: '1980-10-23T11:51:53.211Z'
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  activityId:
+                    type: string
+                    description: activityId
+                  location:
+                    type: string
+                    description: location
+                  name:
+                    type: string
+                    description: name
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                description: content
+              computed:
+                type: object
+                properties:
+                  Excepteurf:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          id_c9:
+                            type: object
+                            properties:
+                              culpa9ba:
+                                type: string
+                                description: culpa9ba
+                              nostruda12:
+                                type: string
+                                description: nostruda12
+                            description: id_c9
+                          ex_30a:
+                            type: object
+                            properties:
+                              occaecat_8f:
+                                type: string
+                                description: occaecat_8f
+                              ad_3cf:
+                                type: string
+                                description: ad_3cf
+                            description: ex_30a
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          quis__d:
+                            type: string
+                            description: quis__d
+                        description: stringMetadata
+                    description: Excepteurf
+                  eu61a:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          culpa_bb8:
+                            type: object
+                            properties:
+                              sit5b:
+                                type: string
+                                description: sit5b
+                            description: culpa_bb8
+                          nostrud1:
+                            type: object
+                            properties:
+                              reprehenderit_1:
+                                type: string
+                                description: reprehenderit_1
+                              sit_8:
+                                type: string
+                                description: sit_8
+                            description: nostrud1
+                          occaecat_5b3:
+                            type: object
+                            properties:
+                              consequatc:
+                                type: string
+                                description: consequatc
+                              deseruntfa9:
+                                type: string
+                                description: deseruntfa9
+                            description: occaecat_5b3
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          ad_c94:
+                            type: string
+                            description: ad_c94
+                        description: stringMetadata
+                    description: eu61a
+                  Ut48:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          pariatur3:
+                            type: object
+                            properties:
+                              adipisicing5e:
+                                type: string
+                                description: adipisicing5e
+                            description: pariatur3
+                          nulla86:
+                            type: object
+                            properties:
+                              ullamco9:
+                                type: string
+                                description: ullamco9
+                              consectetur__:
+                                type: string
+                                description: consectetur__
+                            description: nulla86
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          dolore9:
+                            type: string
+                            description: dolore9
+                        description: stringMetadata
+                    description: Ut48
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /case-management-svc/v1/tenants/{tenantId}/cases/byNumber/{number}:
+    get:
+      summary: Retrieve a Case by Number
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveACaseByNumberForATenant.
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: number
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  name:
+                    type: string
+                    description: name
+                  status:
+                    type: string
+                    description: status
+                  severity:
+                    type: string
+                    description: severity
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  ownerUserId:
+                    type: string
+                    description: ownerUserId
+                  number:
+                    type: integer
+                    format: int32
+                    description: number
+                  description:
+                    type: string
+                    description: description
+                  incident:
+                    type: boolean
+                    description: incident
+                  valid:
+                    type: boolean
+                    description: valid
+                  observationName:
+                    type: string
+                    description: observationName
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                  collaborators:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        caseId:
+                          type: string
+                          description: caseId
+                        collaboratorId:
+                          type: string
+                          description: collaboratorId
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        collaboratorEmail:
+                          type: string
+                          description: collaboratorEmail
+                    description: collaborators
+                  ownerUserEmail:
+                    type: string
+                    description: ownerUserEmail
+                  createdByEmail:
+                    type: string
+                    description: createdByEmail
+                  updatedByEmail:
+                    type: string
+                    description: updatedByEmail
+                description: content
+              computed:
+                type: object
+                properties:
+                  non_6:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          ullamco_671:
+                            type: object
+                            properties:
+                              ut3:
+                                type: string
+                                description: ut3
+                              Ut_c6:
+                                type: string
+                                description: Ut_c6
+                              esse_7:
+                                type: string
+                                description: esse_7
+                            description: ullamco_671
+                          aliquab:
+                            type: object
+                            properties:
+                              in_53:
+                                type: string
+                                description: in_53
+                            description: aliquab
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Excepteur_79:
+                            type: string
+                            description: Excepteur_79
+                        description: stringMetadata
+                    description: non_6
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /case-management-svc/v1/tenants/{tenantId}/cases/byStatusAndPriorityAndOwnerPattern:
+    get:
+      summary: Retrieve Cases by Owner, Severity, and Status
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveAllTheCasesForATenant.
+      parameters:
+        - name: afterId
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: limit
+          default: '10'
+          in: query
+          type: string
+          required: false
+        - name: ownerEmail
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: severity
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: sort
+          default: ''
+          in: query
+          type: string
+          required: false
+        - name: status
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              computed:
+                type: object
+                properties:
+                  ad_9_:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          veniamb44:
+                            type: object
+                            properties:
+                              Loremef:
+                                type: string
+                                description: Loremef
+                            description: veniamb44
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Ut4c2:
+                            type: string
+                            description: Ut4c2
+                          ete:
+                            type: string
+                            description: ete
+                        description: stringMetadata
+                    description: ad_9_
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    name:
+                      type: string
+                      description: name
+                    status:
+                      type: string
+                      description: status
+                    severity:
+                      type: string
+                      description: severity
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    ownerUserId:
+                      type: string
+                      description: ownerUserId
+                    number:
+                      type: integer
+                      format: int32
+                      description: number
+                    description:
+                      type: string
+                      description: description
+                    incident:
+                      type: boolean
+                      description: incident
+                    valid:
+                      type: boolean
+                      description: valid
+                    observationName:
+                      type: string
+                      description: observationName
+                    firstLogDate:
+                      type: string
+                      description: firstLogDate
+                    lastLogDate:
+                      type: string
+                      description: lastLogDate
+                    collaborators:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          caseId:
+                            type: string
+                            description: caseId
+                          collaboratorId:
+                            type: string
+                            description: collaboratorId
+                          tenantId:
+                            type: string
+                            description: tenantId
+                          id:
+                            type: string
+                            description: id
+                          createdOn:
+                            type: string
+                            description: createdOn
+                          updatedOn:
+                            type: string
+                            description: updatedOn
+                          collaboratorEmail:
+                            type: string
+                            description: collaboratorEmail
+                      description: collaborators
+                    ownerUserEmail:
+                      type: string
+                      description: ownerUserEmail
+                    createdByEmail:
+                      type: string
+                      description: createdByEmail
+                    updatedByEmail:
+                      type: string
+                      description: updatedByEmail
+                description: content
+  /case-management-svc/v1/tenants/{tenantId}/cases/metrics:
+    get:
+      summary: Retrieve Case Metrics
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveCaseMetricsForATenant.
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  numberOfCasesByStatus:
+                    type: object
+                    properties:
+                      laboris033:
+                        type: string
+                        description: laboris033
+                      culpa78:
+                        type: string
+                        description: culpa78
+                      proidentd5:
+                        type: string
+                        description: proidentd5
+                    description: numberOfCasesByStatus
+                  numberOfCasesBySeverity:
+                    type: object
+                    properties:
+                      esse0:
+                        type: string
+                        description: esse0
+                    description: numberOfCasesBySeverity
+                  numberOfUnassignedCases:
+                    type: string
+                    description: numberOfUnassignedCases
+                  numberOpenCases:
+                    type: string
+                    description: numberOpenCases
+                description: content
+              computed:
+                type: object
+                properties:
+                  dolor_482:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          non_f1c:
+                            type: object
+                            properties:
+                              dolore254:
+                                type: string
+                                description: dolore254
+                              enim_e:
+                                type: string
+                                description: enim_e
+                              pariatur_8:
+                                type: string
+                                description: pariatur_8
+                            description: non_f1c
+                          aliquip__:
+                            type: object
+                            properties:
+                              in__:
+                                type: string
+                                description: in__
+                            description: aliquip__
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          id_3_:
+                            type: string
+                            description: id_3_
+                          do_0a:
+                            type: string
+                            description: do_0a
+                        description: stringMetadata
+                    description: dolor_482
+                  Ut_9a3:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          deserunt_b:
+                            type: object
+                            properties:
+                              nisi35:
+                                type: string
+                                description: nisi35
+                              in7a:
+                                type: string
+                                description: in7a
+                            description: deserunt_b
+                          essef4:
+                            type: object
+                            properties:
+                              consectetur2c:
+                                type: string
+                                description: consectetur2c
+                              voluptate_50e:
+                                type: string
+                                description: voluptate_50e
+                              ullamcod4a:
+                                type: string
+                                description: ullamcod4a
+                            description: essef4
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          ad5:
+                            type: string
+                            description: ad5
+                          veniamf:
+                            type: string
+                            description: veniamf
+                          et6b:
+                            type: string
+                            description: et6b
+                          voluptate_d78:
+                            type: string
+                            description: voluptate_d78
+                        description: stringMetadata
+                    description: Ut_9a3
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /case-management-svc/v1/tenants/{tenantId}/cases/search:
+    get:
+      summary: Search for Cases by String
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: SearchForCasesInATenantUsingAString.
+      parameters:
+        - name: afterId
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: caseStatus
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: limit
+          default: '10'
+          in: query
+          type: string
+          required: false
+        - name: searchCriteria
+          default: null
+          in: query
+          type: string
+          required: true
+        - name: sort
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              computed:
+                type: object
+                properties:
+                  ad_9_:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          veniamb44:
+                            type: object
+                            properties:
+                              Loremef:
+                                type: string
+                                description: Loremef
+                            description: veniamb44
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Ut4c2:
+                            type: string
+                            description: Ut4c2
+                          ete:
+                            type: string
+                            description: ete
+                        description: stringMetadata
+                    description: ad_9_
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    name:
+                      type: string
+                      description: name
+                    status:
+                      type: string
+                      description: status
+                    severity:
+                      type: string
+                      description: severity
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    ownerUserId:
+                      type: string
+                      description: ownerUserId
+                    number:
+                      type: integer
+                      format: int32
+                      description: number
+                    description:
+                      type: string
+                      description: description
+                    incident:
+                      type: boolean
+                      description: incident
+                    valid:
+                      type: boolean
+                      description: valid
+                    observationName:
+                      type: string
+                      description: observationName
+                    firstLogDate:
+                      type: string
+                      description: firstLogDate
+                    lastLogDate:
+                      type: string
+                      description: lastLogDate
+                    collaborators:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          caseId:
+                            type: string
+                            description: caseId
+                          collaboratorId:
+                            type: string
+                            description: collaboratorId
+                          tenantId:
+                            type: string
+                            description: tenantId
+                          id:
+                            type: string
+                            description: id
+                          createdOn:
+                            type: string
+                            description: createdOn
+                          updatedOn:
+                            type: string
+                            description: updatedOn
+                          collaboratorEmail:
+                            type: string
+                            description: collaboratorEmail
+                      description: collaborators
+                    ownerUserEmail:
+                      type: string
+                      description: ownerUserEmail
+                    createdByEmail:
+                      type: string
+                      description: createdByEmail
+                    updatedByEmail:
+                      type: string
+                      description: updatedByEmail
+                description: content
+  /case-management-svc/v1/tenants/{tenantId}/cases/{id}:
+    get:
+      summary: Retrieve a Case by ID
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveACaseByIdForATenant.
+      parameters:
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  name:
+                    type: string
+                    description: name
+                  status:
+                    type: string
+                    description: status
+                  severity:
+                    type: string
+                    description: severity
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  ownerUserId:
+                    type: string
+                    description: ownerUserId
+                  number:
+                    type: integer
+                    format: int32
+                    description: number
+                  description:
+                    type: string
+                    description: description
+                  incident:
+                    type: boolean
+                    description: incident
+                  valid:
+                    type: boolean
+                    description: valid
+                  observationName:
+                    type: string
+                    description: observationName
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                  collaborators:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        caseId:
+                          type: string
+                          description: caseId
+                        collaboratorId:
+                          type: string
+                          description: collaboratorId
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        collaboratorEmail:
+                          type: string
+                          description: collaboratorEmail
+                    description: collaborators
+                  ownerUserEmail:
+                    type: string
+                    description: ownerUserEmail
+                  createdByEmail:
+                    type: string
+                    description: createdByEmail
+                  updatedByEmail:
+                    type: string
+                    description: updatedByEmail
+                description: content
+              computed:
+                type: object
+                properties:
+                  non_6:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          ullamco_671:
+                            type: object
+                            properties:
+                              ut3:
+                                type: string
+                                description: ut3
+                              Ut_c6:
+                                type: string
+                                description: Ut_c6
+                              esse_7:
+                                type: string
+                                description: esse_7
+                            description: ullamco_671
+                          aliquab:
+                            type: object
+                            properties:
+                              in_53:
+                                type: string
+                                description: in_53
+                            description: aliquab
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Excepteur_79:
+                            type: string
+                            description: Excepteur_79
+                        description: stringMetadata
+                    description: non_6
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+    put:
+      summary: Update a Case
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+
+        * This method will return 404 upon receiving a identifier that does not
+        exist. 
+      operationId: UpdateACase
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: id
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              createdBy:
+                type: string
+                description: createdBy
+              name:
+                type: string
+                description: name
+              severity:
+                type: string
+                description: severity
+              status:
+                type: string
+                description: status
+              tenantId:
+                type: string
+                description: tenantId
+              updatedBy:
+                type: string
+                description: updatedBy
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+              ownerUserId:
+                type: string
+                description: ownerUserId
+              number:
+                type: integer
+                format: int32
+                description: number
+              description:
+                type: string
+                description: description
+              incident:
+                type: boolean
+                description: incident
+              valid:
+                type: boolean
+                description: valid
+              observationName:
+                type: string
+                description: observationName
+              firstLogDate:
+                type: string
+                description: firstLogDate
+              lastLogDate:
+                type: string
+                description: lastLogDate
+            default:
+              createdBy: incididunt et cillum in elit
+              name: <
+              severity: NONE
+              status: NEW
+              tenantId: <string>
+              updatedBy: adipisicing tempor eiusmod pariatur
+              id: tlTbaACgl5Aj6IH6F0YYgVgSjo1x.H__VFE0
+              createdOn: '2011-12-07T03:36:20.593Z'
+              updatedOn: '2003-08-17T21:57:00.442Z'
+              ownerUserId: ali
+              number: 4950069
+              description: in ut laboris officia
+              incident: false
+              valid: false
+              observationName: occaecat ea cillum commodo
+              firstLogDate: '2019-08-06T00:02:13.178Z'
+              lastLogDate: '2016-08-26T19:21:15.359Z'
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  tenantId:
+                    type: string
+                    description: tenantId
+                  name:
+                    type: string
+                    description: name
+                  status:
+                    type: string
+                    description: status
+                  severity:
+                    type: string
+                    description: severity
+                  createdBy:
+                    type: string
+                    description: createdBy
+                  updatedBy:
+                    type: string
+                    description: updatedBy
+                  id:
+                    type: string
+                    description: id
+                  createdOn:
+                    type: string
+                    description: createdOn
+                  updatedOn:
+                    type: string
+                    description: updatedOn
+                  ownerUserId:
+                    type: string
+                    description: ownerUserId
+                  number:
+                    type: integer
+                    format: int32
+                    description: number
+                  description:
+                    type: string
+                    description: description
+                  incident:
+                    type: boolean
+                    description: incident
+                  valid:
+                    type: boolean
+                    description: valid
+                  observationName:
+                    type: string
+                    description: observationName
+                  firstLogDate:
+                    type: string
+                    description: firstLogDate
+                  lastLogDate:
+                    type: string
+                    description: lastLogDate
+                  collaborators:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        caseId:
+                          type: string
+                          description: caseId
+                        collaboratorId:
+                          type: string
+                          description: collaboratorId
+                        tenantId:
+                          type: string
+                          description: tenantId
+                        id:
+                          type: string
+                          description: id
+                        createdOn:
+                          type: string
+                          description: createdOn
+                        updatedOn:
+                          type: string
+                          description: updatedOn
+                        collaboratorEmail:
+                          type: string
+                          description: collaboratorEmail
+                    description: collaborators
+                  ownerUserEmail:
+                    type: string
+                    description: ownerUserEmail
+                  createdByEmail:
+                    type: string
+                    description: createdByEmail
+                  updatedByEmail:
+                    type: string
+                    description: updatedByEmail
+                description: content
+              computed:
+                type: object
+                properties:
+                  non_6:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          ullamco_671:
+                            type: object
+                            properties:
+                              ut3:
+                                type: string
+                                description: ut3
+                              Ut_c6:
+                                type: string
+                                description: Ut_c6
+                              esse_7:
+                                type: string
+                                description: esse_7
+                            description: ullamco_671
+                          aliquab:
+                            type: object
+                            properties:
+                              in_53:
+                                type: string
+                                description: in_53
+                            description: aliquab
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Excepteur_79:
+                            type: string
+                            description: Excepteur_79
+                        description: stringMetadata
+                    description: non_6
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /case-management-svc/v1/tenants/{tenantId}/cases:
+    get:
+      summary: Retrieve All Cases
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: RetrieveAllTheCasesForATenant
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          type: string
+        - name: afterId
+          in: query
+          required: false
+          type: string
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result.
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          description: The maximum number of results that a response page can contain.
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: The order you would like the results in.
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          x-ms-visibility: internal
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              computed:
+                type: object
+                properties:
+                  ad_9_:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          veniamb44:
+                            type: object
+                            properties:
+                              Loremef:
+                                type: string
+                                description: Loremef
+                            description: veniamb44
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          Ut4c2:
+                            type: string
+                            description: Ut4c2
+                          ete:
+                            type: string
+                            description: ete
+                        description: stringMetadata
+                    description: ad_9_
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int32
+                    description: totalCount
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    name:
+                      type: string
+                      description: name
+                    status:
+                      type: string
+                      description: status
+                    severity:
+                      type: string
+                      description: severity
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                    ownerUserId:
+                      type: string
+                      description: ownerUserId
+                    number:
+                      type: integer
+                      format: int32
+                      description: number
+                    description:
+                      type: string
+                      description: description
+                    incident:
+                      type: boolean
+                      description: incident
+                    valid:
+                      type: boolean
+                      description: valid
+                    observationName:
+                      type: string
+                      description: observationName
+                    firstLogDate:
+                      type: string
+                      description: firstLogDate
+                    lastLogDate:
+                      type: string
+                      description: lastLogDate
+                    collaborators:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          caseId:
+                            type: string
+                            description: caseId
+                          collaboratorId:
+                            type: string
+                            description: collaboratorId
+                          tenantId:
+                            type: string
+                            description: tenantId
+                          id:
+                            type: string
+                            description: id
+                          createdOn:
+                            type: string
+                            description: createdOn
+                          updatedOn:
+                            type: string
+                            description: updatedOn
+                          collaboratorEmail:
+                            type: string
+                            description: collaboratorEmail
+                      description: collaborators
+                    ownerUserEmail:
+                      type: string
+                      description: ownerUserEmail
+                    createdByEmail:
+                      type: string
+                      description: createdByEmail
+                    updatedByEmail:
+                      type: string
+                      description: updatedByEmail
+                description: content
+    post:
+      summary: Create a Case
+      description: >
+        * This method will return 400 upon receiving an invalid request. 
+
+        * This method will return 401 for unauthenticated users. 
+
+        * This method will return 403 for authenticated users who request a
+        forbidden resource. 
+      operationId: CreateCase
+      parameters:
+        - name: tenantId
+          in: path
+          type: string
+          required: true
+          x-ms-visibility: important
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+          x-ms-visibility: internal
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              createdBy:
+                type: string
+                description: createdBy
+              name:
+                type: string
+                description: name
+              severity:
+                type: string
+                description: severity
+              status:
+                type: string
+                description: status
+              tenantId:
+                type: string
+                description: tenantId
+              updatedBy:
+                type: string
+                description: updatedBy
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+              ownerUserId:
+                type: string
+                description: ownerUserId
+              number:
+                type: integer
+                format: int32
+                description: number
+              description:
+                type: string
+                description: description
+              incident:
+                type: boolean
+                description: incident
+              valid:
+                type: boolean
+                description: valid
+              observationName:
+                type: string
+                description: observationName
+              firstLogDate:
+                type: string
+                description: firstLogDate
+              lastLogDate:
+                type: string
+                description: lastLogDate
+            default:
+              createdBy: incididunt et cillum in elit
+              name: <
+              severity: NONE
+              status: NEW
+              tenantId: <string>
+              updatedBy: adipisicing tempor eiusmod pariatur
+              id: tlTbaACgl5Aj6IH6F0YYgVgSjo1x.H__VFE0
+              createdOn: '2011-12-07T03:36:20.593Z'
+              updatedOn: '2003-08-17T21:57:00.442Z'
+              ownerUserId: ali
+              number: 4950069
+              description: in ut laboris officia
+              incident: false
+              valid: false
+              observationName: occaecat ea cillum commodo
+              firstLogDate: '2019-08-06T00:02:13.178Z'
+              lastLogDate: '2016-08-26T19:21:15.359Z'
+          required: true
+      responses:
+        '201':
+          description: '201'
+          schema:
+            type: object
+            properties:
+              createdBy:
+                type: string
+                description: createdBy
+              name:
+                type: string
+                description: name
+              severity:
+                type: string
+                description: severity
+              status:
+                type: string
+                description: status
+              tenantId:
+                type: string
+                description: tenantId
+              updatedBy:
+                type: string
+                description: updatedBy
+              id:
+                type: string
+                description: id
+              createdOn:
+                type: string
+                description: createdOn
+              updatedOn:
+                type: string
+                description: updatedOn
+              ownerUserId:
+                type: string
+                description: ownerUserId
+              number:
+                type: integer
+                format: int32
+                description: number
+              description:
+                type: string
+                description: description
+              incident:
+                type: boolean
+                description: incident
+              valid:
+                type: boolean
+                description: valid
+              observationName:
+                type: string
+                description: observationName
+              firstLogDate:
+                type: string
+                description: firstLogDate
+              lastLogDate:
+                type: string
+                description: lastLogDate
+    put:
+      summary: Update Metadata for Multiple Cases
+      description: >-
+        Changes the status, severity, description, owner or add a comment for
+        multiple Cases
+      operationId: UpdateMultipleCases
+      parameters:
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: status
+              severity:
+                type: string
+                description: severity
+              comment:
+                type: string
+                description: comment
+              ownerId:
+                type: string
+                description: ownerId
+              description:
+                type: string
+                description: description
+              caseIds:
+                type: array
+                items:
+                  type: string
+                description: caseIds
+            default:
+              status: NEW
+              severity: NONE
+              comment: <string>
+              ownerId: <string>
+              description: <string>
+              caseIds:
+                - <string>
+                - <string>
+          required: true
+      responses:
+        '200':
+          description: '200'
+          schema:
+            type: object
+            properties:
+              computed:
+                type: object
+                properties:
+                  eu_fa:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          cupidatat_0f:
+                            type: object
+                            properties:
+                              officia_7:
+                                type: string
+                                description: officia_7
+                              aliquad:
+                                type: string
+                                description: aliquad
+                            description: cupidatat_0f
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          dolor_48a:
+                            type: string
+                            description: dolor_48a
+                          mollit_00:
+                            type: string
+                            description: mollit_00
+                          cilluma:
+                            type: string
+                            description: cilluma
+                        description: stringMetadata
+                    description: eu_fa
+                  veniam_e:
+                    type: object
+                    properties:
+                      morselMetadata:
+                        type: object
+                        properties:
+                          consecteturf6:
+                            type: object
+                            properties:
+                              elit_5:
+                                type: string
+                                description: elit_5
+                              laborum884:
+                                type: string
+                                description: laborum884
+                            description: consecteturf6
+                        description: morselMetadata
+                      stringMetadata:
+                        type: object
+                        properties:
+                          dolor_4:
+                            type: string
+                            description: dolor_4
+                        description: stringMetadata
+                    description: veniam_e
+                description: computed
+              requestId:
+                type: string
+                description: requestId
+              error:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: status
+                  message:
+                    type: string
+                    description: message
+                  validationFailures:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          description: field
+                        message:
+                          type: string
+                          description: message
+                    description: validationFailures
+                description: error
+              status:
+                type: string
+                description: status
+  /search-indexing-svc/v1/tenants/{tenantId}/signals:
+    post:
+      summary: Run a Synchronous Search
+      description: >-
+        This method will return 400 upon receiving an invalid request. This
+        method will return 401 for unauthenticated users. This method will
+        return 403 for authenticated users who request a forbidden resource.
+      operationId: RunASynchronousSearch
+      parameters:
+        - name: timeOut
+          default: null
+          in: query
+          type: string
+          required: false
+        - name: tenantId
+          default: null
+          in: path
+          type: string
+          required: true
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Content-Type
+          x-ms-visibility: internal
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          description: Accept
+          x-ms-visibility: internal
+        - name: body
+          in: body
+          schema:
+            type: object
+            properties:
+              tenantId:
+                type: string
+                description: tenantId
+                title: tenantId
+                x-ms-visibility: important
+              computedTypes:
+                type: array
+                items:
+                  type: string
+                description: computedTypes
+              filter:
+                type: string
+                description: filter
+                title: filter
+              aggregations:
+                type: object
+                properties:
+                  aggregationRequests:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        aggregationType:
+                          type: string
+                          description: aggregationType
+                        field:
+                          type: string
+                          description: field
+                        bucketOrder:
+                          type: string
+                          description: bucketOrder
+                        bucketLimit:
+                          type: string
+                          description: bucketLimit
+                        bucketInterval:
+                          type: string
+                          description: bucketInterval
+                        numberOfIntervals:
+                          type: string
+                          description: numberOfIntervals
+                        lrDateTimeRange:
+                          type: string
+                          description: lrDateTimeRange
+                        subAggregations:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              value:
+                                type: string
+                                description: value
+                          description: subAggregations
+                        bucketStart:
+                          type: string
+                          description: bucketStart
+                        bucketEnd:
+                          type: string
+                          description: bucketEnd
+                        bucketFields:
+                          type: array
+                          items:
+                            type: string
+                          description: bucketFields
+                    description: aggregationRequests
+                description: aggregations
+              searchId:
+                type: string
+                description: searchId
+              ephemeralFilter:
+                type: string
+                description: ephemeralFilter
+              taskId:
+                type: string
+                description: taskId
+              newSearch:
+                type: string
+                description: newSearch
+              time:
+                type: object
+                properties:
+                  timeBoxEnum:
+                    type: string
+                    description: timeBoxEnum
+                  startTime:
+                    type: string
+                    description: startTime
+                  endTime:
+                    type: string
+                    description: endTime
+                  field:
+                    type: string
+                    description: field
+                  lrDateTime:
+                    type: string
+                    description: lrDateTime
+                description: time
+              pageRequest:
+                type: object
+                properties:
+                  limit:
+                    type: string
+                    description: limit
+                  sort:
+                    type: object
+                    properties:
+                      sortFields:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            fieldName:
+                              type: string
+                              description: fieldName
+                            ascending:
+                              type: string
+                              description: ascending
+                        description: sortFields
+                    description: sort
+                  afterId:
+                    type: string
+                    description: afterId
+                description: pageRequest
+            default:
+              tenantId: <string>
+              computedTypes:
+                - <string>
+                - <string>
+              filter: <string>
+              aggregations:
+                aggregationRequests:
+                  - aggregationType: COUNT_TREND
+                    field: <string>
+                    bucketOrder: TOP
+                    bucketLimit: <integer>
+                    bucketInterval: <string>
+                    numberOfIntervals: <integer>
+                    lrDateTimeRange: <string>
+                    subAggregations:
+                      - value: >-
+                          <Circular reference to
+                          #/components/schemas/AggregationRequest detected>
+                      - value: >-
+                          <Circular reference to
+                          #/components/schemas/AggregationRequest detected>
+                    bucketStart: <dateTime>
+                    bucketEnd: <dateTime>
+                    bucketFields:
+                      - <string>
+                      - <string>
+                  - aggregationType: COUNT_TREND
+                    field: <string>
+                    bucketOrder: TOP
+                    bucketLimit: <integer>
+                    bucketInterval: <string>
+                    numberOfIntervals: <integer>
+                    lrDateTimeRange: <string>
+                    subAggregations:
+                      - value: >-
+                          <Circular reference to
+                          #/components/schemas/AggregationRequest detected>
+                      - value: >-
+                          <Circular reference to
+                          #/components/schemas/AggregationRequest detected>
+                    bucketStart: <dateTime>
+                    bucketEnd: <dateTime>
+                    bucketFields:
+                      - <string>
+                      - <string>
+              searchId: <string>
+              ephemeralFilter: <string>
+              taskId: <string>
+              newSearch: <boolean>
+              time:
+                timeBoxEnum: YESTERDAY
+                startTime: <dateTime>
+                endTime: <dateTime>
+                field: <string>
+                lrDateTime: <string>
+              pageRequest:
+                limit: <integer>
+                sort:
+                  sortFields:
+                    - fieldName: k
+                      ascending: <boolean>
+                afterId: <string>
+          required: true
+      responses:
+        '200':
+          description: default
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+              status:
+                type: string
+                description: status
+              paginationInfo:
+                type: object
+                properties:
+                  nextPage:
+                    type: string
+                    description: nextPage
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    id:
+                      type: string
+                      description: id
+                    result:
+                      type: object
+                      properties:
+                        general_information.log_source.type_id:
+                          type: string
+                          description: general_information.log_source.type_id
+                        action.type:
+                          type: string
+                          description: action.type
+                        general_information.log_source.name:
+                          type: string
+                          description: general_information.log_source.name
+                        object.type:
+                          type: string
+                          description: object.type
+                        general_information.tenant_id:
+                          type: string
+                          description: general_information.tenant_id
+                        general_information.raw_message:
+                          type: string
+                          description: general_information.raw_message
+                        general_information.standard_time_confidence:
+                          type: string
+                          description: general_information.standard_time_confidence
+                        general_information.case_activity_id:
+                          type: string
+                          description: general_information.case_activity_id
+                        origin.host.ip_address.value:
+                          type: string
+                          description: origin.host.ip_address.value
+                        general_information.common_event:
+                          type: array
+                          items:
+                            type: string
+                          description: general_information.common_event
+                        general_information.log_source.type_name:
+                          type: string
+                          description: general_information.log_source.type_name
+                        general_information.log_source.id:
+                          type: string
+                          description: general_information.log_source.id
+                        object.policy.version:
+                          type: string
+                          description: object.policy.version
+                        object.policy.name:
+                          type: string
+                          description: object.policy.name
+                        system.create.nanos:
+                          type: integer
+                          format: int32
+                          description: system.create.nanos
+                        system.create.date:
+                          type: string
+                          description: system.create.date
+                        general_information.standard_message_time:
+                          type: string
+                          description: general_information.standard_message_time
+                        action.observation.key:
+                          type: array
+                          items:
+                            type: string
+                          description: action.observation.key
+                        threat.severity:
+                          type: string
+                          description: threat.severity
+                        object.policy.id:
+                          type: string
+                          description: object.policy.id
+                        general_information.case_id:
+                          type: string
+                          description: general_information.case_id
+                        general_information.message_id:
+                          type: string
+                          description: general_information.message_id
+                      description: result
+                description: content
+              count:
+                type: object
+                properties:
+                  qualifier:
+                    type: string
+                    description: qualifier
+                  value:
+                    type: integer
+                    format: int32
+                    description: value
+                description: count
+              took:
+                type: integer
+                format: int32
+                description: took
+              aggregationBatchResponse:
+                type: object
+                properties:
+                  aggregationResponses:
+                    type: array
+                    items: {}
+                    description: aggregationResponses
+                description: aggregationBatchResponse
+        '400':
+          description: '400'
+          schema:
+            type: object
+        '401':
+          description: '401'
+          schema:
+            type: object
+        '403':
+          description: '403'
+          schema:
+            type: object
+  /trigger/trigger/case-management-svc/v1/tenants/lrsupport/cases: {}
+  /trigger/case-management-svc/v1/tenants/{tenantId}/cases:
+    get:
+      responses:
+        default:
+          description: default
+          schema:
+            type: object
+            properties:
+              requestId:
+                type: string
+                description: requestId
+                title: ''
+                x-ms-visibility: advanced
+              paginationInfo:
+                type: object
+                properties:
+                  nextPage:
+                    type: string
+                    description: nextPage
+                    title: ''
+                    x-ms-visibility: advanced
+                description: paginationInfo
+              content:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tenantId:
+                      type: string
+                      description: tenantId
+                    id:
+                      type: string
+                      description: id
+                    createdOn:
+                      type: string
+                      description: createdOn
+                      title: ''
+                      format: date-time
+                    updatedOn:
+                      type: string
+                      description: updatedOn
+                      title: ''
+                      format: date-time
+                    ownerUserId:
+                      type: string
+                      description: ownerUserId
+                    number:
+                      type: integer
+                      format: int32
+                      description: number
+                    name:
+                      type: string
+                      description: name
+                    description:
+                      type: string
+                      description: description
+                    status:
+                      type: string
+                      description: status
+                    severity:
+                      type: string
+                      description: severity
+                    createdBy:
+                      type: string
+                      description: createdBy
+                    updatedBy:
+                      type: string
+                      description: updatedBy
+                    ownerUserEmail:
+                      type: string
+                      description: ownerUserEmail
+                    createdByEmail:
+                      type: string
+                      description: createdByEmail
+                    updatedByEmail:
+                      type: string
+                      description: updatedByEmail
+                description: content
+      summary: When A New Case Is Created
+      description: Test 13
+      operationId: TriggerCaseCreated
+      x-ms-trigger: batch
+      x-ms-trigger-metadata:
+        mode: polling
+        kind: query
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          type: string
+        - name: afterId
+          in: query
+          required: false
+          type: string
+          x-ms-visibility: internal
+          description: >-
+            The id of the item prior to the items you would like returned. A not
+            present, or empty value means you want to start with the first
+            result.  Example: 0f54a194-d75a-4a60-8c68-d4b8e66c971c
+          x-ms-trigger-value:
+            value-collection: content
+            value-path: id
+        - name: limit
+          in: query
+          required: false
+          type: integer
+          default: 1
+          x-ms-visibility: advanced
+          format: int32
+          description: The maximum number of results that a response page can contain.
+        - name: sort
+          in: query
+          required: false
+          type: string
+          description: 'The order you would like the results in. Example: field:asc'
+          default: number:asc
+          x-ms-visibility: advanced
+        - name: Content-Type
+          in: header
+          required: true
+          type: string
+          default: application/json
+          x-ms-visibility: internal
+        - name: Accept
+          in: header
+          required: true
+          type: string
+          default: application/json
+          x-ms-visibility: internal
+      x-ms-trigger-hint: Hints
+definitions: {}
+parameters: {}
+responses: {}
+securityDefinitions:
+  API Key:
+    type: apiKey
+    in: header
+    name: Authorization
+security:
+  - API Key: []
+tags: []
