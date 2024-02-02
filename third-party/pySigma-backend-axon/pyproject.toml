@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pySigma-backend-axon"
+version = "0.1.0"
+description = "pySigma axon backend"
+authors = ["Marcos Schejtman <marcos.schejtman@gmail.com>"]
+license = "Apache-2.0"
+repository = "https://github.com/natashell666/pySigma-backend-axon"
+packages = [
+    { include = "sigma" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pysigma = "^0.10.5"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.2"
+pytest-cov = "^4.1.0"
+coverage = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
