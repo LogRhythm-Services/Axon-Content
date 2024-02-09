@@ -1,0 +1,54 @@
+{
+  "title": "LRSOC : Recon : Disabled Account Auth Failures",
+  "version": 3,
+  "description": "Recently disabled or deleted account unsuccessfully tries to authenticate or access resources.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.common_event in [b49e2331-aeb9-4b2f-837f-528d6793bcec,4a9479a0-3c5c-4fd6-9b70-92104791badb]",
+            "groupByFields": [
+              "target.account.name",
+              "origin.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "9aabba98-0123-4456-b89a-b189ae6bea14"
+        },
+        {
+          "touched": true,
+          "operationType": "FOLLOWED_BY_PATTERN_OPERATION"
+        },
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.common_event in [d2534a47-9f22-4876-9143-6a7bcc1290e7,09df6051-9311-41a8-bda9-5a65de2218cf]",
+            "groupByFields": [
+              "target.account.name",
+              "origin.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "88a99a98-4567-489a-bcde-f189ae6e30c1"
+        },
+        {
+          "seconds": 86400,
+          "touched": true,
+          "operationType": "WITHIN_PATTERN_OPERATION"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

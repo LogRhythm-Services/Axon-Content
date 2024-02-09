@@ -1,0 +1,36 @@
+{
+  "title": "LRSOC : New AD User Created by Non-Domain Admin",
+  "version": 3,
+  "description": "A new AD user is created by someone other than an approved Domain Admin",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "vendor_information.id contains 4720 and target.account.domain contains SECIOUS AND origin.account.name NOT contains doug.gordy_sup AND origin.account.name NOT contains Garrett.Main_sup",
+            "groupByFields": [
+              "origin.account.name",
+              "target.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "bb8a99aa-cdef-4012-b456-718c49d26be4"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "83937455-69c4-476c-825f-14e4a7944255",
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "e7e1c6cf-45e7-416d-aedf-229bf6b0e940",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    }
+  }
+}

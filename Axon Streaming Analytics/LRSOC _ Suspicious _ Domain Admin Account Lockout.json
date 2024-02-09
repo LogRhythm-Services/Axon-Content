@@ -1,0 +1,35 @@
+{
+  "title": "LRSOC : Suspicious : Domain Admin Account Lockout",
+  "version": 3,
+  "description": "Domain Admin account has been locked out after repeated failed login attempts",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "\nvendor_information.id = 4740 and target.account.name in list;643828d4-034c-46e7-9115-d784a9d6fcc5;f52ebcd3-3f7d-48e6-a065-31a99162b4ca\n",
+            "groupByFields": [
+              "target.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "8a888889-4567-489a-bcde-f18bf789d48f"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "d6870faa-b1c4-4a74-9327-ceacb4d68f90",
+      "78344f03-a536-455a-96ec-1c1d24e233bd",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae",
+      "28de4ee0-ca58-40f5-9ac7-ca38edf7883a"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}

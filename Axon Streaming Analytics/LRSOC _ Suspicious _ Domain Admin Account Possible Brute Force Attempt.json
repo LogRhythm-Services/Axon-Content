@@ -1,0 +1,36 @@
+{
+  "title": "LRSOC : Suspicious : Domain Admin Account Possible Brute Force Attempt",
+  "version": 3,
+  "description": "An attempt to brute force a domain admin account's password. The Account owner should be questioned to determine root cause.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "9b9a8b88-cdef-4012-b456-718bf3f14fd5",
+          "countThresholdObserved": {
+            "filter": "vendor_information.id = 4625 and origin.account.name in list;643828d4-034c-46e7-9115-d784a9d6fcc5;f52ebcd3-3f7d-48e6-a065-31a99162b4ca",
+            "threshold": 5,
+            "groupByFields": [
+              "origin.account.name"
+            ],
+            "windowSeconds": 900
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "09df6051-9311-41a8-bda9-5a65de2218cf",
+      "0787e28f-71d8-4a1e-9048-71fd61e89a0d",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}
