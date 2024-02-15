@@ -1,5 +1,5 @@
 {
-  "title": "LRSOC : New AD User Created by Non-Domain Admin",
+  "title": " New AD User Created by Non-Domain Admin",
   "version": 3,
   "description": "A new AD user is created by someone other than an approved Domain Admin",
   "observationPipeline": {
