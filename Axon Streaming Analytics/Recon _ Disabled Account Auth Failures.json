@@ -1,5 +1,5 @@
 {
-  "title": "LRSOC : Recon : Disabled Account Auth Failures",
+  "title": " Recon : Disabled Account Auth Failures",
   "version": 3,
   "description": "Recently disabled or deleted account unsuccessfully tries to authenticate or access resources.",
   "observationPipeline": {
