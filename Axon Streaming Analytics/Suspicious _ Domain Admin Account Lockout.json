@@ -1,5 +1,5 @@
 {
-  "title": "LRSOC : Suspicious : Domain Admin Account Lockout",
+  "title": " Suspicious : Domain Admin Account Lockout",
   "version": 3,
   "description": "Domain Admin account has been locked out after repeated failed login attempts",
   "observationPipeline": {
