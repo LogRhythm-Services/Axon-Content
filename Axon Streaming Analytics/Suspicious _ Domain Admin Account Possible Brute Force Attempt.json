@@ -1,5 +1,5 @@
 {
-  "title": "LRSOC : Suspicious : Domain Admin Account Possible Brute Force Attempt",
+  "title": " Suspicious : Domain Admin Account Possible Brute Force Attempt",
   "version": 3,
   "description": "An attempt to brute force a domain admin account's password. The Account owner should be questioned to determine root cause.",
   "observationPipeline": {
