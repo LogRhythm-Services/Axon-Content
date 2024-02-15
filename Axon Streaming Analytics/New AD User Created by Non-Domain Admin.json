@@ -9,7 +9,7 @@
           "touched": true,
           "blockType": "LOG_OBSERVED",
           "logObserved": {
-            "filter": "vendor_information.id contains 4720 and target.account.domain contains SECIOUS AND origin.account.name NOT contains doug.gordy_sup AND origin.account.name NOT contains Garrett.Main_sup",
+            "filter": "vendor_information.id contains 4720 and target.account.domain contains SECIOUS AND origin.account.name",
             "groupByFields": [
               "origin.account.name",
               "target.account.name"
