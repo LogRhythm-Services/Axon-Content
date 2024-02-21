@@ -1,0 +1,38 @@
+{
+  "title": "T1016:System Network Configuration Discovery_Rev2",
+  "version": 3,
+  "description": "",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "threat.mitre_technique contains T1016 AND vendor_information.log_type = \"AdvancedHunting-IdentityQueryEvents\"",
+            "groupByFields": [
+              "action.type",
+              "vendor_information.log_type"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "8aaa88aa-0123-4456-b89a-b18dcca99f3e"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "5d939cff-6f45-47f2-932a-69998ef18c37",
+      "ca8aeaf7-a68d-4b85-b569-8049f97d0e28"
+    ],
+    "metadataFields": {
+      "threat.severity": "low"
+    },
+    "suppressionConfig": {
+      "enabled": false,
+      "groupByFields": [],
+      "windowSeconds": 3600
+    }
+  }
+}
