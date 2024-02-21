@@ -1,0 +1,39 @@
+{
+  "title": "T1098: Account Manipulation_Rev2",
+  "version": 3,
+  "description": "",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name = Microsoft Defender Advanced Hunting  and threat.mitre_technique contains Account Manipulation (T1098) and action.type = Group Membership Changed",
+            "groupByFields": [
+              "action.type",
+              "threat.mitre_technique"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "b89aa889-4567-489a-bcde-f18dcc7ecaf9",
+          "ruleTuningOperation": {
+            "inclusionFilter": ""
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "0787e28f-71d8-4a1e-9048-71fd61e89a0d"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    },
+    "suppressionConfig": {
+      "enabled": false,
+      "groupByFields": [],
+      "windowSeconds": 3600
+    }
+  }
+}
