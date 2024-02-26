@@ -1,0 +1,34 @@
+{
+  "title": "Suspicious Registry Activity",
+  "version": 3,
+  "description": "Rule looks for activities that affect the system registry.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "((object.process.parent_process.command_line matches \"reg(\\.exe)?\\s+\\w+\\s+hklm\\\\.*\" OR object.process.command_line matches \"reg(\\.exe)?\\s+\\w+\\s+hklm\\\\.*\" OR object.script.command_line matches \"reg(\\.exe)?\\s+\\w+\\s+hklm\\\\.*\") and object.process.parent_process.command_line != \"C:\\WINDOWS\\system32\\cmd.exe\" /d /c C:\\WINDOWS\\system32\\silcollector.cmd configure AND object.process.command_line != \"C:\\Windows\\system32\\reg.exe  query hklm\\software\\microsoft\\windows\\softwareinventorylogging /v collectionstate /reg:64\") AND object.process.command_line != \"C:\\Windows\\system32\\cmd.exe /c C:\\Windows\\system32\\reg.exe query hklm\\software\\microsoft\\windows\\softwareinventorylogging /v collectionstate /reg:64\"",
+            "groupByFields": [
+              "target.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "b89a9aaa-0123-4456-b89a-b18c4a2d9265"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "4f2888b5-4916-40e6-9b71-22fc584a3ce0",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.name": "Data Exfiltration",
+      "threat.severity": "medium"
+    }
+  }
+}
