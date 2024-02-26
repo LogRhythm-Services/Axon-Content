@@ -1,0 +1,32 @@
+{
+  "title": "Application (Attack Pattern) - T1569.002 C2 Default Service Installation",
+  "version": 3,
+  "description": "",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "vendor_information.id = 7045 and ( object.process.name = sliver OR object.process.name = sliver implant )",
+            "groupByFields": [
+              "object.process.name",
+              "origin.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "8ab99bb9-4567-489a-bcde-f1899e103a83"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "fd8051d5-ffcb-47f0-a5d5-4c2e814b46bc",
+      "4f2888b5-4916-40e6-9b71-22fc584a3ce0"
+    ],
+    "metadataFields": {
+      "threat.severity": "none"
+    }
+  }
+}
