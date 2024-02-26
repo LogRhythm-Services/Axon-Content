@@ -1,0 +1,32 @@
+{
+  "title": "Office 365 : Potentially Malicious Link was Clicked",
+  "version": 3,
+  "description": "Any Office 365 event when a user clicks on a malicous link",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.log_source.type_name contains M365 Threat Management AND action.result.message = \"A potentially malicious URL click was detected\"",
+            "groupByFields": [
+              "origin.account.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "a8a9b899-4567-489a-bcde-f18b71f9ab9c"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "high"
+    }
+  }
+}
