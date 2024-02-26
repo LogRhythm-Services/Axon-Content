@@ -1,0 +1,33 @@
+{
+  "title": "Recon : Multiple Lockouts",
+  "version": 3,
+  "description": "An account is locked out 2 or more times per hour.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "a88aa8a9-cdef-4012-b456-718b210a7046",
+          "countThresholdObserved": {
+            "filter": "general_information.common_event_name contains Account Locked",
+            "threshold": 4,
+            "groupByFields": [
+              "target.account.name"
+            ],
+            "windowSeconds": 3600
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}
