@@ -1,0 +1,34 @@
+{
+  "title": "System Time Change",
+  "version": 3,
+  "description": "Detects when the system time is changed by an an account other than system or localservice.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "general_information.common_event = 49349df1-4862-4e90-951f-fd3c9a52f416 and origin.account.name not in [system,localservice]",
+            "groupByFields": [
+              "origin.account.name",
+              "target.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "a8a8a98b-cdef-4012-b456-7189b2963a2b"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "49349df1-4862-4e90-951f-fd3c9a52f416",
+      "8534ab1a-fb51-4db0-96a6-35a6cb1ad914",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "none"
+    }
+  }
+}
