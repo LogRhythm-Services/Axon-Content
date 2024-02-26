@@ -1,0 +1,34 @@
+{
+  "title": "User Rejection of Okta Verify Push Notification (2min)",
+  "version": 3,
+  "description": "Five or more verify push rejections in 2 minutes",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "bbabba9a-0123-4456-b89a-b18adc66ad04",
+          "countThresholdObserved": {
+            "filter": "general_information.log_source.type_name = \"Okta Platform\" and action.message = \"Authentication of user via MFA\" and action.result.message = Failure and general_information.raw_message contains \"OKTA_VERIFY_PUSH\"",
+            "threshold": 5,
+            "groupByFields": [
+              "origin.account.name"
+            ],
+            "windowSeconds": 1800
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "high",
+      "threat.mitre_technique": "T1621"
+    }
+  }
+}
