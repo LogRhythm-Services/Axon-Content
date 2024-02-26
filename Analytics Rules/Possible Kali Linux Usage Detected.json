@@ -1,0 +1,34 @@
+{
+  "title": "Possible Kali Linux Usage Detected",
+  "version": 3,
+  "description": "This rule is to detect when files are being downloaded from the official Kali repositories, using the zScaler log source.",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "9a9aaa8a-cdef-4012-b456-718d5c6ccabd",
+          "countThresholdObserved": {
+            "filter": "general_information.log_source.type_name NOT contains cloudai AND general_information.log_source.type_name != \"Axon Case API\" and general_information.raw_message contains kali AND (target.host.name = \"mirrors.jevincanders.net\" OR target.host.name = \"http.kali.org\" OR target.host.name = \"kali.download\" OR target.host.name = \"mirror.accuris.ca\")",
+            "threshold": 3,
+            "groupByFields": [
+              "origin.host.name"
+            ],
+            "windowSeconds": 120
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "348a37e6-590e-4767-baae-a5c3951391ae",
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    }
+  }
+}
