@@ -1,0 +1,33 @@
+{
+  "title": "Mimikatz Detected",
+  "version": 3,
+  "description": "",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "COUNT_THRESHOLD_OBSERVED",
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "ruleElementKey": "aaa9aaaa-89ab-4cde-b012-318a7105e229",
+          "countThresholdObserved": {
+            "filter": "general_information.log_source.type_name = SentinelONE EDR API and threat.category NOT contains nothing and object.file.hash.sha1 in [4DCC4289D7A1E1DEC003E80EA50882BF4A55F1EE,3F3E852EF8595EDDAF2DB33FBAFBDE8BA37D1BD4,CF15E96175B497A0776E77582E57D763A77EDB14,561710AB6741FAD1281BEDB943337D763B8BE5AD]",
+            "threshold": 1,
+            "groupByFields": [
+              "target.host.name"
+            ],
+            "windowSeconds": 60
+          }
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "348a37e6-590e-4767-baae-a5c3951391ae",
+      "28de4ee0-ca58-40f5-9ac7-ca38edf7883a"
+    ],
+    "metadataFields": {
+      "threat.severity": "high"
+    }
+  }
+}
