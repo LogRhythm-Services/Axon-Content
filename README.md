@@ -2,11 +2,11 @@ The repo contains a collection of content for LogRhythm Axon.
 Content Types to be included in the repo:  
 |Content Type | Name|
 |-------|-------|
-|Dashboards	| object_name.dashboard.txt
+|Dashboards	| dashboard.json
 |Analytic Rules| object_name.streaminganalyticsrule.json| 	
 |Lists	| |
 |Replay Logs |	object_name.replaylogs.csv|
-|Search |	Object_name.savedsearch.txt|
+|Search |	included in dashboard.json file|
 |Processing Policies |	Object_name.processingpolicy.lre |
 |Doc	| |
 
