@@ -10,3 +10,13 @@
 
 
 
+To import a custom dashboard:
+
+Click the drop-arrow icon at the top left of the Dashboard, next to the name of the loaded custom dashboard.
+The Dashboards list expands.
+Click the Import Dashboard button.
+The Import Dashboard pop-up appears.
+
+Either drag the .json file into the Import Dashboard pop-up, or click the Browse Files button and navigate through your machine to select the desired .json file.
+Click Import.
+The custom dashboard is successfully imported into your Axon environment, and that dashboard is loaded.
