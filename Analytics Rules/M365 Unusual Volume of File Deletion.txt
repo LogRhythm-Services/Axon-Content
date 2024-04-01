@@ -1,0 +1,32 @@
+{
+    "title": "Microsoft 365 - Unusual Volume of File Deletion",
+    "version": 3,
+    "description": "Detects when a Microsoft Cloud App Security reported a user has deleted a unusual a large volume of files. Author: austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS m365 AND (general_information.raw_message CONTAINS \"SecurityComplianceCenter\" AND general_information.raw_message CONTAINS \"Unusual volume of file deletion\" AND action.result.code = \"success\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "78a34b67-3c39-4886-8fb4-61c46dc18ecd"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact",
+            "threat.mitre_technique": "T1485:Data Destruction"
+        }
+    }
+}

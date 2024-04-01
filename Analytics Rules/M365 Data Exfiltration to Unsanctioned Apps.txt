@@ -1,0 +1,32 @@
+{
+    "title": "Data Exfiltration to Unsanctioned Apps",
+    "version": 3,
+    "description": "Detects when a Microsoft Cloud App Security reported when a user or IP address uses an app that is not sanctioned to perform an activity that resembles an attempt to exfiltrate information from your organization. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS m365 AND (general_information.raw_message CONTAINS \"SecurityComplianceCenter\" AND general_information.raw_message CONTAINS \"Data exfiltration to unsanctioned apps\" AND action.result.code = \"success\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "2b669496-d215-47d8-bd9a-f4a45bf07cda"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0010:Exfiltration",
+            "threat.mitre_technique": "T1537:Transfer Data to Cloud Account"
+        }
+    }
+}

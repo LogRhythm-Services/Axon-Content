@@ -1,0 +1,32 @@
+{
+    "title": "Disabling Multi Factor Authentication",
+    "version": 3,
+    "description": "Detects disabling of Multi Factor Authentication. Author: Splunk Threat Research Team (original rule), Harjot Singh @cyb3rjy0t (sigma rule). License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS m365 AND general_information.raw_message CONTAINS \"Disable Strong Authentication.\"",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "60de9b57-dc4d-48b9-a6a0-b39e0469f876"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0003:Persistence",
+            "threat.mitre_technique": "T1556:Modify Authentication Process"
+        }
+    }
+}

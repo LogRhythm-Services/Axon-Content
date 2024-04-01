@@ -1,0 +1,31 @@
+{
+    "title": "Activity Performed by Terminated User",
+    "version": 3,
+    "description": "Detects when a Microsoft Cloud App Security reported for users whose account were terminated in Azure AD, but still perform activities in other platforms such as AWS or Salesforce.\nThis is especially relevant for users who use another account to manage resources, since these accounts are often not terminated when a user leaves the company.\n. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS m365 AND (general_information.raw_message CONTAINS \"SecurityComplianceCenter\" AND general_information.raw_message CONTAINS \"Activity performed by terminated user\" AND action.result.code = \"success\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "2e669ed8-742e-4fe5-b3c4-5a59b486c2ee"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}
