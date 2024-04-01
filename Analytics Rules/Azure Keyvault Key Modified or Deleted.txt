@@ -1,0 +1,32 @@
+{
+    "title": "Azure Keyvault Key Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when a Keyvault Key is modified or deleted in Azure. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS azure AND (general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/UPDATE/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/CREATE\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/CREATE/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/IMPORT/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/RECOVER/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/RESTORE/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/DELETE\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/BACKUP/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.KEYVAULT/VAULTS/KEYS/PURGE/ACTION\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "80eeab92-0979-4152-942d-96749e11df40"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0006:Credential Access, TA0040:Impact",
+            "threat.mitre_technique": "T1552:Unsecured Credentials, T1552.001:Unsecured Credentials : Credentials In Files"
+        }
+    }
+}

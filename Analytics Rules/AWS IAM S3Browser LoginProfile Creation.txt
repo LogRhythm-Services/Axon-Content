@@ -1,0 +1,32 @@
+{
+    "title": "AWS IAM S3Browser LoginProfile Creation",
+    "version": 3,
+    "description": "Detects S3 Browser utility performing reconnaissance looking for existing IAM Users without a LoginProfile defined then (when found) creating a LoginProfile. Author: daniel.bohannon@permiso.io (@danielhbohannon). License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"iam.amazonaws.com\" AND (general_information.raw_message CONTAINS \"GetLoginProfile\" or general_information.raw_message CONTAINS \"CreateLoginProfile\") AND general_information.raw_message CONTAINS \"S3 Browser\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "db014773-b1d3-46bd-ba26-133337c0ffee"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0002:Execution, TA0003:Persistence",
+            "threat.mitre_technique": "T1059.009:Command and Scripting Interpreter : Cloud API, T1078.004:Valid Accounts : Cloud Accounts"
+        }
+    }
+}

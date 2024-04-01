@@ -1,0 +1,31 @@
+{
+    "title": "Azure VPN Connection Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when a VPN connection is modified or deleted. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS azure AND (general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/VPNGATEWAYS/VPNCONNECTIONS/WRITE\" or general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/VPNGATEWAYS/VPNCONNECTIONS/DELETE\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "61171ffc-d79c-4ae5-8e10-9323dba19cd3"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}

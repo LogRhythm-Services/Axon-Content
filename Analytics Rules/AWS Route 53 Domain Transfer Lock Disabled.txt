@@ -1,0 +1,32 @@
+{
+    "title": "AWS Route 53 Domain Transfer Lock Disabled",
+    "version": 3,
+    "description": "Detects when a transfer lock was removed from a Route 53 domain. It is recommended to refrain from performing this action unless intending to transfer the domain to a different registrar. Author: Elastic, Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"route53.amazonaws.com\" AND general_information.raw_message CONTAINS \"DisableDomainTransferLock\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "3940b5f1-3f46-44aa-b746-ebe615b879e0"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "low",
+            "threat.mitre_tactic": "TA0003:Persistence, TA0006:Credential Access",
+            "threat.mitre_technique": "T1098:Account Manipulation"
+        }
+    }
+}
