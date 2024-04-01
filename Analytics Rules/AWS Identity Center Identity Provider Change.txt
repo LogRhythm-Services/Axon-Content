@@ -1,0 +1,32 @@
+{
+    "title": "AWS Identity Center Identity Provider Change",
+    "version": 3,
+    "description": "Detects a change in the AWS Identity Center (FKA AWS SSO) identity provider.\nA change in identity provider allows an attacker to establish persistent access or escalate privileges via user impersonation.\n. Author: Michael McIntyre @wtfender. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND ((general_information.raw_message CONTAINS \"sso-directory.amazonaws.com\" or general_information.raw_message CONTAINS \"sso.amazonaws.com\") AND (general_information.raw_message CONTAINS \"AssociateDirectory\" or general_information.raw_message CONTAINS \"DisableExternalIdPConfigurationForDirectory\" or general_information.raw_message CONTAINS \"DisassociateDirectory\" or general_information.raw_message CONTAINS \"EnableExternalIdPConfigurationForDirectory\"))",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "d3adb3ef-b7e7-4003-9092-1924c797db35"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0003:Persistence",
+            "threat.mitre_technique": "T1556:Modify Authentication Process"
+        }
+    }
+}

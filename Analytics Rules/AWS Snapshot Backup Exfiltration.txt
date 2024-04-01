@@ -1,0 +1,32 @@
+{
+    "title": "AWS Snapshot Backup Exfiltration",
+    "version": 3,
+    "description": "Detects the modification of an EC2 snapshot's permissions to enable access from another account. Author: Darin Smith. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"ec2.amazonaws.com\" AND general_information.raw_message CONTAINS \"ModifySnapshotAttribute\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "abae8fec-57bd-4f87-aff6-6e3db989843d"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0010:Exfiltration",
+            "threat.mitre_technique": "T1537:Transfer Data to Cloud Account"
+        }
+    }
+}

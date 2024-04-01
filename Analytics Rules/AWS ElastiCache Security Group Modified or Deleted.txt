@@ -1,0 +1,32 @@
+{
+    "title": "AWS ElastiCache Security Group Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when an ElastiCache security group has been modified or deleted. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"elasticache.amazonaws.com\" AND (general_information.raw_message CONTAINS \"DeleteCacheSecurityGroup\" or general_information.raw_message CONTAINS \"AuthorizeCacheSecurityGroupIngress\" or general_information.raw_message CONTAINS \"RevokeCacheSecurityGroupIngress\" or general_information.raw_message CONTAINS \"AuthorizeCacheSecurityGroupEgress\" or general_information.raw_message CONTAINS \"RevokeCacheSecurityGroupEgress\"))",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "7c797da2-9cf2-4523-ba64-33b06339f0cc"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "low",
+            "threat.mitre_tactic": "TA0040:Impact",
+            "threat.mitre_technique": "T1531:Account Access Removal"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "title": "AWS Suspicious SAML Activity",
+    "version": 3,
+    "description": "Identifies when suspicious SAML activity has occurred in AWS. An adversary could gain backdoor access via SAML. Author: Austin Songer. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND ((general_information.raw_message CONTAINS \"sts.amazonaws.com\" AND general_information.raw_message CONTAINS \"AssumeRoleWithSAML\") or (general_information.raw_message CONTAINS \"iam.amazonaws.com\" AND general_information.raw_message CONTAINS \"UpdateSAMLProvider\"))",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "f43f5d2f-3f2a-4cc8-b1af-81fde7dbaf0e"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0001:Initial Access, TA0004:Privilege Escalation, TA0008:Lateral Movement",
+            "threat.mitre_technique": "T1078:Valid Accounts, T1548:Abuse Elevation Control Mechanism, T1550:Use Alternate Authentication Material, T1550.001:Use Alternate Authentication Material : Application Access Token"
+        }
+    }
+}

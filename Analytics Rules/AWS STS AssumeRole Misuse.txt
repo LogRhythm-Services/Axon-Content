@@ -1,0 +1,32 @@
+{
+    "title": "AWS STS AssumeRole Misuse",
+    "version": 3,
+    "description": "Identifies the suspicious use of AssumeRole. Attackers could move laterally and escalate privileges. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"AssumedRole\" AND general_information.raw_message CONTAINS \"Role\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "905d389b-b853-46d0-9d3d-dea0d3a3cd49"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "low",
+            "threat.mitre_tactic": "TA0004:Privilege Escalation, TA0008:Lateral Movement",
+            "threat.mitre_technique": "T1548:Abuse Elevation Control Mechanism, T1550:Use Alternate Authentication Material, T1550.001:Use Alternate Authentication Material : Application Access Token"
+        }
+    }
+}

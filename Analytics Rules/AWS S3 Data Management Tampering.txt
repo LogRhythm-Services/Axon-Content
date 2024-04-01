@@ -1,0 +1,32 @@
+{
+    "title": "AWS S3 Data Management Tampering",
+    "version": 3,
+    "description": "Detects when a user tampers with S3 data management in Amazon Web Services. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS aws AND (general_information.raw_message CONTAINS \"s3.amazonaws.com\" AND (general_information.raw_message CONTAINS \"PutBucketLogging\" or general_information.raw_message CONTAINS \"PutBucketWebsite\" or general_information.raw_message CONTAINS \"PutEncryptionConfiguration\" or general_information.raw_message CONTAINS \"PutLifecycleConfiguration\" or general_information.raw_message CONTAINS \"PutReplicationConfiguration\" or general_information.raw_message CONTAINS \"ReplicateObject\" or general_information.raw_message CONTAINS \"RestoreObject\"))",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "78b3756a-7804-4ef7-8555-7b9024a02e2d"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "low",
+            "threat.mitre_tactic": "TA0010:Exfiltration",
+            "threat.mitre_technique": "T1537:Transfer Data to Cloud Account"
+        }
+    }
+}
