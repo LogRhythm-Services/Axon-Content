@@ -1,0 +1,32 @@
+{
+    "title": "Google Workspace Granted Domain API Access",
+    "version": 3,
+    "description": "Detects when an API access service account is granted domain authority. Author: Austin Songer. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND (general_information.raw_message CONTAINS \"admin.googleapis.com\" AND general_information.raw_message CONTAINS \"AUTHORIZE_API_CLIENT_ACCESS\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "04e2a23a-9b29-4a5c-be3a-3542e3f982ba"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0003:Persistence",
+            "threat.mitre_technique": "T1098:Account Manipulation"
+        }
+    }
+}

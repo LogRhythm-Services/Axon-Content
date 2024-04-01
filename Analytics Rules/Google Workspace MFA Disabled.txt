@@ -1,0 +1,31 @@
+{
+    "title": "Google Workspace MFA Disabled",
+    "version": 3,
+    "description": "Detects when multi-factor authentication (MFA) is disabled. Author: Austin Songer. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND ((general_information.raw_message CONTAINS \"admin.googleapis.com\" AND (general_information.raw_message CONTAINS \"ENFORCE_STRONG_AUTHENTICATION\" or general_information.raw_message CONTAINS \"ALLOW_STRONG_AUTHENTICATION\")) AND general_information.raw_message CONTAINS \"false\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "780601d1-6376-4f2a-884e-b8d45599f78c"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}
