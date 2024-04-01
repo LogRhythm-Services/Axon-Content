@@ -1,0 +1,32 @@
+{
+    "title": "Disabled MFA to Bypass Authentication Mechanisms",
+    "version": 3,
+    "description": "Detection for when multi factor authentication has been disabled, which might indicate a malicious activity to bypass authentication mechanisms. Author: @ionsor. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS azure AND (general_information.raw_message CONTAINS \"AzureActiveDirectory\" AND general_information.raw_message CONTAINS \"Disable Strong Authentication.\" AND action.result.code = \"success\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "7ea78478-a4f9-42a6-9dcd-f861816122bf"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0003:Persistence",
+            "threat.mitre_technique": "T1556:Modify Authentication Process"
+        }
+    }
+}

@@ -1,0 +1,6 @@
+general_information.log_source.type_name CONTAINS azure AND (general_information.raw_message CONTAINS "MICROSOFT.NETWORK/AZUREFIREWALLS/WRITE" OR general_information.raw_message CONTAINS "MICROSOFT.NETWORK/AZUREFIREWALLS/DELETE")
+
+// name: Azure Firewall Modified or Deleted
+// uuid: 512cf937-ea9b-4332-939c-4c2c94baadcd
+// author: Austin Songer @austinsonger
+// licence: DRL 1.1

@@ -1,0 +1,32 @@
+{
+    "title": "Azure Network Firewall Policy Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when a Firewall Policy is Modified or Deleted. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS azure AND (general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/FIREWALLPOLICIES/WRITE\" or general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/FIREWALLPOLICIES/JOIN/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/FIREWALLPOLICIES/CERTIFICATES/ACTION\" or general_information.raw_message CONTAINS \"MICROSOFT.NETWORK/FIREWALLPOLICIES/DELETE\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "83c17918-746e-4bd9-920b-8e098bf88c23"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0005:Defense Evasion, TA0040:Impact",
+            "threat.mitre_technique": "T1562.007:Impair Defenses : Disable or Modify Cloud Firewall"
+        }
+    }
+}
