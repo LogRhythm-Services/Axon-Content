@@ -1,0 +1,31 @@
+{
+    "title": "Google Cloud SQL Database Modified or Deleted",
+    "version": 3,
+    "description": "Detect when a Cloud SQL DB has been modified or deleted. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND (general_information.raw_message CONTAINS \"cloudsql.instances.create\" or general_information.raw_message CONTAINS \"cloudsql.instances.delete\" or general_information.raw_message CONTAINS \"cloudsql.users.update\" or general_information.raw_message CONTAINS \"cloudsql.users.delete\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "f346bbd5-2c4e-4789-a221-72de7685090d"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}

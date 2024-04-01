@@ -1,0 +1,31 @@
+{
+    "title": "Google Cloud DNS Zone Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when a DNS Zone is modified or deleted in Google Cloud. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND (general_information.raw_message CONTAINS \"Dns.ManagedZones.Delete\" or general_information.raw_message CONTAINS \"Dns.ManagedZones.Update\" or general_information.raw_message CONTAINS \"Dns.ManagedZones.Patch\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "28268a8f-191f-4c17-85b2-f5aa4fa829c3"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}

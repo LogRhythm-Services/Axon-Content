@@ -1,0 +1,32 @@
+{
+    "title": "Google Cloud Firewall Modified or Deleted",
+    "version": 3,
+    "description": "Detects  when a firewall rule is modified or deleted in Google Cloud Platform (GCP). Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND (general_information.raw_message CONTAINS \"v*.Compute.Firewalls.Delete\" or general_information.raw_message CONTAINS \"v*.Compute.Firewalls.Patch\" or general_information.raw_message CONTAINS \"v*.Compute.Firewalls.Update\" or general_information.raw_message CONTAINS \"v*.Compute.Firewalls.Insert\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "fe513c69-734c-4d4a-8548-ac5f609be82b"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0005:Defense Evasion",
+            "threat.mitre_technique": "T1562:Impair Defenses"
+        }
+    }
+}

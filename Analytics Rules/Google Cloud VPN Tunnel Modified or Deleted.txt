@@ -1,0 +1,31 @@
+{
+    "title": "Google Cloud VPN Tunnel Modified or Deleted",
+    "version": 3,
+    "description": "Identifies when a VPN Tunnel Modified or Deleted in Google Cloud. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND (general_information.raw_message CONTAINS \"compute.vpnTunnels.insert\" or general_information.raw_message CONTAINS \"compute.vpnTunnels.delete\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "99980a85-3a61-43d3-ac0f-b68d6b4797b1"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}

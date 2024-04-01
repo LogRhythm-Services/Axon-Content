@@ -1,0 +1,32 @@
+{
+    "title": "GCP Access Policy Deleted",
+    "version": 3,
+    "description": "Detects when an access policy that is applied to a GCP cloud resource is deleted.\nAn adversary would be able to remove access policies to gain access to a GCP cloud resource.\n. Author: Bryan Lim. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS gcp AND ((general_information.raw_message CONTAINS \"accesscontextmanager.accessPolicies.delete\" or general_information.raw_message CONTAINS \"accesscontextmanager.accessPolicies.accessLevels.delete\" or general_information.raw_message CONTAINS \"accesscontextmanager.accessPolicies.accessZones.delete\" or general_information.raw_message CONTAINS \"accesscontextmanager.accessPolicies.authorizedOrgsDescs.delete\") AND general_information.raw_message CONTAINS \"true\" AND general_information.raw_message CONTAINS \"accesscontextmanager.googleapis.com\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "32438676-1dba-4ac7-bf69-b86cba995e05"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0003:Persistence, TA0004:Privilege Escalation",
+            "threat.mitre_technique": "T1098:Account Manipulation"
+        }
+    }
+}
