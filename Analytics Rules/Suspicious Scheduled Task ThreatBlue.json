@@ -1,0 +1,38 @@
+{
+  "title": "Suspicious Scheduled Task | ThreatBlue",
+  "version": 3,
+  "description": "Based on real-world findings, detects when scheduled tasks are created with arguments from C:\\Users\\ directory. developed by the ThreatBlue team",
+  "observationPipeline": {
+    "pattern": {
+      "operations": [
+        {
+          "touched": true,
+          "blockType": "LOG_OBSERVED",
+          "logObserved": {
+            "filter": "vendor_information.id = 4698 and general_information.raw_message contains Arguments and general_information.raw_message contains \"C:\\Users\\\" AND general_information.log_source.type_name = \"Microsoft Windows Security\"",
+            "groupByFields": [
+              "origin.account.name",
+              "target.host.name"
+            ]
+          },
+          "operationType": "WHERE_PATTERN_OPERATION",
+          "isOutOfBoxRule": false,
+          "ruleElementKey": "b9bba999-0123-4456-b89a-b18e62e31a6a"
+        }
+      ],
+      "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+    },
+    "commonEvents": [
+      "dfeb1ad8-0b54-4759-a07a-4fc7dd9a4fc4",
+      "348a37e6-590e-4767-baae-a5c3951391ae"
+    ],
+    "metadataFields": {
+      "threat.severity": "medium"
+    },
+    "suppressionConfig": {
+      "enabled": false,
+      "groupByFields": [],
+      "windowSeconds": 3600
+    }
+  }
+}
