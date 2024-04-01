@@ -1,0 +1,31 @@
+{
+    "title": "Okta Policy Modified or Deleted",
+    "version": 3,
+    "description": "Detects when an Okta policy is modified or deleted. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND (general_information.raw_message CONTAINS \"policy.lifecycle.update\" or general_information.raw_message CONTAINS \"policy.lifecycle.delete\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "1667a172-ed4c-463c-9969-efd92195319a"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "low",
+            "threat.mitre_tactic": "TA0040:Impact"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "title": "Okta User Session Start Via An Anonymising Proxy Service",
+    "version": 3,
+    "description": "Detects when an Okta user session starts where the user is behind an anonymising proxy service. Author: kelnage. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND (general_information.raw_message CONTAINS \"user.session.start\" AND general_information.raw_message CONTAINS \"true\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "bde30855-5c53-4c18-ae90-1ff79ebc9578"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0005:Defense Evasion",
+            "threat.mitre_technique": "T1562.006:Impair Defenses : Indicator Blocking"
+        }
+    }
+}

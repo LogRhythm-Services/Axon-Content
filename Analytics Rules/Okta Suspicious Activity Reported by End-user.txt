@@ -1,0 +1,32 @@
+{
+    "title": "Okta Suspicious Activity Reported by End-user",
+    "version": 3,
+    "description": "Detects when an Okta end-user reports activity by their account as being potentially suspicious. Author: kelnage. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND general_information.raw_message CONTAINS \"user.account.report_suspicious_activity_by_enduser\"",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "07e97cc6-aed1-43ae-9081-b3470d2367f1"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0042:Resource Development",
+            "threat.mitre_technique": "T1586.003:Compromise Accounts : Cloud Accounts"
+        }
+    }
+}

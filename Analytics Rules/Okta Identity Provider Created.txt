@@ -1,0 +1,32 @@
+{
+    "title": "Okta Identity Provider Created",
+    "version": 3,
+    "description": "Detects when a new identity provider is created for Okta. Author: kelnage. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND general_information.raw_message CONTAINS \"system.idp.lifecycle.create\"",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "969c7590-8c19-4797-8c1b-23155de6e7ac"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0003:Persistence",
+            "threat.mitre_technique": "T1098.001:Account Manipulation : Additional Cloud Credentials"
+        }
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "title": "Okta FastPass Phishing Detection",
+    "version": 3,
+    "description": "Detects when Okta FastPass prevents a known phishing site. Author: Austin Songer @austinsonger. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND (general_information.raw_message CONTAINS \"FastPass declined phishing attempt\" AND general_information.raw_message CONTAINS \"FAILURE\" AND general_information.raw_message CONTAINS \"user.authentication.auth_via_mfa\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "ee39a9f7-5a79-4b0a-9815-d36b3cf28d3e"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "high",
+            "threat.mitre_tactic": "TA0001:Initial Access",
+            "threat.mitre_technique": "T1566:Phishing"
+        }
+    }
+}

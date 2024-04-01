@@ -1,0 +1,31 @@
+{
+    "title": "Okta Admin Functions Access Through Proxy",
+    "version": 3,
+    "description": "Detects access to Okta admin functions through proxy. Author: Muhammad Faisal @faisalusuf. License: DRL 1.1.",
+    "observationPipeline": {
+        "pattern": {
+            "operations": [
+                {
+                    "touched": true,
+                    "blockType": "LOG_OBSERVED",
+                    "logObserved": {
+                        "filter": "general_information.log_source.type_name CONTAINS okta AND (general_information.raw_message CONTAINS \"admin\" AND general_information.raw_message CONTAINS \"true\")",
+                        "groupByFields": []
+                    },
+                    "operationType": "WHERE_PATTERN_OPERATION",
+                    "isOutOfBoxRule": false,
+                    "ruleElementKey": "9058ca8b-f397-4fd1-a9fa-2b7aad4d6309"
+                }
+            ],
+            "afterMatchSkipStrategy": "SKIP_PAST_LAST_EVENT"
+        },
+        "commonEvents": [
+            "28de4ee0-ca58-40f5-9ac7-ca38edf7883a",
+            "348a37e6-590e-4767-baae-a5c3951391ae"
+        ],
+        "metadataFields": {
+            "threat.severity": "medium",
+            "threat.mitre_tactic": "TA0006:Credential Access"
+        }
+    }
+}
