@@ -22,8 +22,9 @@ Start-Transcript -Path .\$Tenant.txt
         $myColumn = $i.columns.id
         if ($i.entryCount -ne 0)
         {
+         $myLimit = $i.entryCount
          Write-Host $i.title "," $i.columns.title
-         $Values = Invoke-RestMethod "https://$Endpoint/list-svc/v1/tenants/$Tenant/list-definitions/$myList/column-definitions/$myColumn/values?limit=10000" -Method 'GET' -Headers $headers
+         $Values = Invoke-RestMethod "https://$Endpoint/list-svc/v1/tenants/$Tenant/list-definitions/$myList/column-definitions/$myColumn/values?limit=$myLimit" -Method 'GET' -Headers $headers
          foreach ($entry in $Values.content) {
             Write-Host $entry.value
          }
